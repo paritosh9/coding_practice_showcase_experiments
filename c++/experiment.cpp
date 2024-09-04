@@ -104,3 +104,75 @@ int main()
     vec.push_back(Move{ 20 });
     return 0;
 }
+
+////////////////////////////
+//////////////////////////
+//// virtual destructor experiment code //////
+/******************************************************************************
+
+Welcome to GDB Online.
+GDB online is an online compiler and debugger tool for C, C++, Python, Java, PHP, Ruby, Perl,
+C#, OCaml, VB, Swift, Pascal, Fortran, Haskell, Objective-C, Assembly, HTML, CSS, JS, SQLite, Prolog.
+Code, Compile, Run and Debug online from anywhere in world.
+
+*******************************************************************************/
+// C++ program without declaring the
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class experiment {
+  private :
+    int var1;
+    
+  protected :
+    
+  public :
+    experiment(){
+        cout << "constructing default base experiment\n";
+    }
+    experiment(int var) : var1(var){
+        cout << "constructing base experiment\n";
+    }
+    virtual ~experiment(){
+        cout << "deleting experiment\n";
+    }
+    void getter(){
+        cout << "var = " << var1 << endl;
+    }
+};
+
+class sub_experiment : public experiment {
+  private :
+    int var1;
+    
+  protected :
+    
+  public :
+    sub_experiment(int var) : var1(var){
+        cout << "constructing derived sub_experiment\n";
+    } 
+    void getter(){
+        cout << "var = " << var1 << endl;
+    }
+    ~sub_experiment(){
+        cout << "deleting sub_experiment\n";
+    }
+};
+// Driver Code
+int main()
+{
+  cout << "in main\n";
+  experiment *exp1 = new experiment(5);
+  sub_experiment *subexp1 = new sub_experiment(4);
+  
+  exp1->getter();
+  subexp1->getter();
+  
+  exp1 = subexp1;
+  delete exp1;
+  return 0;
+}
+//////////////////////
+//////////////////////
