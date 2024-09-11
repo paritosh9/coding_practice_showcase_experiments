@@ -23,24 +23,17 @@ If all assertions pass, then your solution will be accepted.
 class Solution {
 public:
     int removeDuplicates(vector<int>& nums) {
-       int count = 0 ;
-       auto first_pointer = nums.begin();
-       auto second_pointer = nums.begin();
-       std::cout << "here\n";
-
-       while(first_pointer != nums.end() && second_pointer != nums.end()){
-         std::cout << "here1\n";
-         if(*first_pointer != *(second_pointer+1)){
-            std::cout << "here2\n";
-            *(first_pointer+1) = *(second_pointer+1);
-            first_pointer++, second_pointer++ ;
-            count++;
-         } else{
-             second_pointer++; 
-         }
+       
+       int first_index = 0;
+       //auto second_pointer = nums.begin();
+     
+       for(int i = 0; i < nums.size(); i++){
+         if(nums[first_index] != nums[i+1]){
+           nums[first_index + 1] = nums[i+1];
+           first_index++; 
+         } 
        }
-       std::cout << count << endl; 
-       return count; 
+       return first_index; 
     }
 };
 
