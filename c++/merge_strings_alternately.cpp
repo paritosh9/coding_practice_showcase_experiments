@@ -5,6 +5,25 @@ Return the merged string.*/
 
 class Solution {
 public:
+    int removeDuplicates(vector<int>& nums) {
+       int count = 0;
+       map<int,int> vector_map;
+       for(auto i = nums.begin(); i != nums.end(); i++){
+          if(!vector_map[*i]){
+            vector_map[*i] = 1;
+            count ++;
+          }
+       }
+       nums.clear();
+       for(auto i : vector_map){
+         nums.push_back(i.first); 
+       }
+       return count;
+    }
+};
+
+class Solution {
+public:
     string mergeAlternately(string word1, string word2) {
         std::string merged_str = "";
         if(word1.size() <= word2.size()){
