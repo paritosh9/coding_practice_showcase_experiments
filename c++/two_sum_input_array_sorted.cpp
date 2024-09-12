@@ -42,6 +42,37 @@ public:
 };
 
 
+/*
+will store vector in std::map
+will start with first index of vector and find target - vec[first] in map using find function
+it seems map find method has average O(constant) time complexity
+no need to allocate return vector result , form vector on the fly to return to save on memory
+*/
+
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& numbers, int target) {
+        //vector<int> result{};
+
+        unordered_map<int,int> vec_to_map;
+        for(int i = 0 ; i < numbers.size(); i++){
+            vec_to_map[numbers[i]] = i;
+        }
+
+        for(int i = 0 ; i < numbers.size(); i++){
+            int to_find = target - numbers[i];
+            auto it = vec_to_map.find(to_find);
+            if (it != vec_to_map.end() && it->second != i){
+                //result.push_back(i+1);
+                //result.push_back(it->second + 1);
+                return {i+1, it->second + 1}; 
+            }
+        }
+
+        return {}; 
+        }
+};
+
 
 /*
 I will start with 2 index and loop over the array while adding and checking if we meet target
