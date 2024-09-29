@@ -45,8 +45,8 @@ void producer(){
     cout<<"thrd 1 \n";
     task *t = new task();
     for(int i =0; i< 100; i++){
-        t->id = i; t->data = i;
         mtx.lock();
+        t->id = i; t->data = i;
         taskQ.push(*t) ;
         cout<< " producer id - " << t->id << " producer data - " << t->data << endl;
         mtx.unlock();
