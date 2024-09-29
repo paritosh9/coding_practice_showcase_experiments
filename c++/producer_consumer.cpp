@@ -71,8 +71,13 @@ void consumer(){
 int main()
 {
     cout <<"Hello World\n";
+    //mutex mtx;
+    //thread thrd1(producer, std::ref(mtx));
+    //thread thrd2(consumer, std::ref(mtx));
+
     // need to user producer consumer objects,so first maybe use objects to call put get methods
     // later need to check how to register call backs and all
+
     thread thrd1(producer);
     thread thrd2(consumer);
     
