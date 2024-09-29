@@ -5,7 +5,7 @@ struct Node {
     Node* next;
 };
 
-bool addNodeAtStart(Node *head, int data){
+Node* addNodeAtStart(Node *head, int data){
     try{
         Node *newNode = new Node();
         newNode->next = head;
@@ -15,15 +15,15 @@ bool addNodeAtStart(Node *head, int data){
         std::cout << "Error \n";
         return 0;
     }
-    return 1;
+    return head;
 }
 
-bool removeNode(Node *head, int data){
-    return 1;
+Node* removeNode(Node *head, int data){
+    return head;
 }
 
-bool reverseList(Node *head){
-    return 1;
+Node* reverseList(Node *head){
+    return head;
 }
 
 void printList(Node *head){
@@ -38,16 +38,17 @@ int main()
     head->data = 0;
     head->next = nullptr;
     
-    addNodeAtStart(head, 1);
-    addNodeAtStart(head, 2);
-    addNodeAtStart(head, 5);
-    addNodeAtStart(head, 34);
-    addNodeAtStart(head, 176);
+    head = addNodeAtStart(head, 1);
+    head = addNodeAtStart(head, 2);
+    head = addNodeAtStart(head, 5);
+    head = addNodeAtStart(head, 34);
+    head = addNodeAtStart(head, 176);
+    printList(head);
     
-    removeNode(head, 7);
-    removeNode(head, 5);
+    head = removeNode(head, 7);
+    head = removeNode(head, 5);
     
-    reverseList(head);
+    head = reverseList(head);
     
     return 0;
 }
