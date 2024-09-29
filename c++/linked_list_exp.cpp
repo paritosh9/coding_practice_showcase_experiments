@@ -5,6 +5,20 @@ struct Node {
     Node* next;
 };
 
+Node* addNodeAtEnd(Node *head, int data){
+        Node *newNode = new Node();
+        newNode->data = data; newNode->next = nullptr;
+        Node *curr = head;
+        while(curr != nullptr){
+            curr = curr->next;
+            if(curr->next == nullptr){
+                curr->next = newNode;
+                break;
+            }
+        }
+    return head;
+}
+
 Node* addNodeAtStart(Node *head, int data){
     try{
         Node *newNode = new Node();
@@ -75,6 +89,10 @@ int main()
     head = addNodeAtStart(head, 176);
     printList(head);
     
+    head = addNodeAtEnd(head, 99);
+    head = addNodeAtEnd(head, 122);
+    printList(head);
+    
     head = reverseList(head);
     printList(head);
     
@@ -85,6 +103,10 @@ int main()
     head = removeNode(head, 5);
     head = removeNode(head, 176);
     
+    printList(head);
+    
+    head = addNodeAtEnd(head, 199);
+    head = addNodeAtEnd(head, 1122);
     printList(head);
     
     head = reverseList(head);
