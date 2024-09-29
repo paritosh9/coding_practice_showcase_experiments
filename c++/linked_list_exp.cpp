@@ -19,6 +19,21 @@ Node* addNodeAtStart(Node *head, int data){
 }
 
 Node* removeNode(Node *head, int data){
+    Node *curr = head;
+    Node *prev = nullptr;
+    while(curr != nullptr) {
+        if(curr->data == data){
+          if(curr == head){
+              head = curr->next;
+          } else{
+             prev->next = curr->next;
+          }
+          delete curr;
+          return head;
+        }
+        prev = curr;
+        curr = curr->next;
+    }    
     return head;
 }
 
@@ -27,16 +42,19 @@ Node* reverseList(Node *head){
 }
 
 void printList(Node *head){
-    
+    std::cout << "\nprinting list\n";
+    Node *curr = head;
+    while(curr != nullptr) {
+        std::cout << "  " << curr->data << "  " << std::endl;
+        curr = curr->next;
+    }    
 }
 
 int main()
 {
-    std::cout<<"Hello World";
+    std::cout<<"Hello World\n";
 
-    Node *head = new Node();
-    head->data = 0;
-    head->next = nullptr;
+    Node *head = nullptr;
     
     head = addNodeAtStart(head, 1);
     head = addNodeAtStart(head, 2);
@@ -47,8 +65,12 @@ int main()
     
     head = removeNode(head, 7);
     head = removeNode(head, 5);
+    head = removeNode(head, 176);
+    
+    printList(head);
     
     head = reverseList(head);
     
     return 0;
+}
 }
