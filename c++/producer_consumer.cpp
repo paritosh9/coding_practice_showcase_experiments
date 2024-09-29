@@ -10,6 +10,8 @@ struct task{
     int id, data;
 };
 
+bool full = false , empty = true;
+
 mutex mtx;
 condition_variable cv;
 queue<task> taskQ;
@@ -45,11 +47,15 @@ void producer(){
     cout<<"thrd 1 \n";
     task *t = new task();
     for(int i =0; i< 100; i++){
-        mtx.lock();
+        //mtx.lock();
+        unique_lock<mutex> lock(mtx);
+        cv.wait(lock, [](){return !full;});
+        empty = false;
         t->id = i; t->data = i;
         taskQ.push(*t) ;
         cout<< " producer id - " << t->id << " producer data - " << t->data << endl;
-        mtx.unlock();
+        cv.notify_one();
+        //mtx.unlock();
     }
     return;
 }
@@ -58,12 +64,17 @@ void producer(){
 void consumer(){
     cout<<"thrd 2 \n";
     task *t = new task();
-    for(int j =0; j< 100; j++){
-        mtx.lock();
+    //for(int j =0; j< 100; j++){
+    while(true){
+        //mtx.lock();
+        if(taskQ.empty()) empty = true;
+        unique_lock<mutex> lock(mtx);
+        cv.wait(lock, [](){return !empty;});
         *t = taskQ.front();
         cout<< " consumer id - " << t->id << " consumer data - " << t->data << endl;
         taskQ.pop();
-        mtx.unlock();
+        cv.notify_one();
+        //mtx.unlock();
     }
     return;
 }
