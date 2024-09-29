@@ -40,6 +40,7 @@ class Consumer{
 };
 */
 
+//user condition_variable
 void producer(){
     cout<<"thrd 1 \n";
     task *t = new task();
@@ -52,6 +53,8 @@ void producer(){
     }
     return;
 }
+
+//use forever while loop in consumer instead of for loop, so use conditional variable
 void consumer(){
     cout<<"thrd 2 \n";
     task *t = new task();
@@ -68,6 +71,8 @@ void consumer(){
 int main()
 {
     cout <<"Hello World\n";
+    // need to user producer consumer objects,so first maybe use objects to call put get methods
+    // later need to check how to register call backs and all
     thread thrd1(producer);
     thread thrd2(consumer);
     
