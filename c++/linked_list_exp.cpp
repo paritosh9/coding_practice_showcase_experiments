@@ -38,6 +38,18 @@ Node* removeNode(Node *head, int data){
 }
 
 Node* reverseList(Node *head){
+    if(head == nullptr){
+        return 0;
+    }
+    Node *curr = head, *prev = nullptr, *next;
+    
+    while(curr != nullptr){
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    head = prev;
     return head;
 }
 
@@ -63,6 +75,12 @@ int main()
     head = addNodeAtStart(head, 176);
     printList(head);
     
+    head = reverseList(head);
+    printList(head);
+    
+    head = reverseList(head);
+    printList(head);
+    
     head = removeNode(head, 7);
     head = removeNode(head, 5);
     head = removeNode(head, 176);
@@ -70,7 +88,7 @@ int main()
     printList(head);
     
     head = reverseList(head);
+    printList(head);
     
     return 0;
-}
 }
