@@ -63,7 +63,7 @@ class BinaryTree {
       q.push(_root);
       while(!q.empty()){
         Node<T> *node = q.front();
-        std::cout << " " << node->_data << " " << std::endl;
+        std::cout << " " << node->_data << " " ;
         if(node->_left){
           q.push(node->_left) ;
         }
@@ -80,17 +80,18 @@ class BinaryTree {
           return ;
       }
       std::stack<Node<T>*> stk;
-      stk.push(_root);
-      while(!stk.empty()){
-        Node<T> *node = stk.front();
-        if(node->_left){
-          stk.push(node->_left) ;
+      Node<T>* node = _root;
+      while(node || !stk.empty()){
+        
+        while(node){
+          stk.push(node);
+          node = node->_left;
         }
-        std::cout << " " << node->_data << " " << std::endl;
-        if(node->_right){
-          stk.push(node->_right) ;
-        }
-        stk.pop();  
+        node = stk.top();
+        std::cout << " " << node->_data << " ";
+        
+        stk.pop();
+        node = node->_right;
       }
     }    
     
@@ -106,17 +107,20 @@ int main()
     std::cout<<"Hello World\n";
 
     BinaryTree<int> binary_tree;
+    binary_tree.insertNode(121);
     binary_tree.insertNode(21);
-    binary_tree.insertNode(1);
-    binary_tree.insertNode(33);
-    binary_tree.insertNode(44);
+    binary_tree.insertNode(133);
+    binary_tree.insertNode(4);
     binary_tree.insertNode(12);
     binary_tree.insertNode(74);
     binary_tree.insertNode(55);
     binary_tree.insertNode(124);
     binary_tree.insertNode(188);
     
+    std::cout << "level order : ";
     binary_tree.level_order_traversal_printTree();
+    std::cout << "\n \nin order : ";
+    binary_tree.inorder_traversal_printTree();
     
     
     return 0;
