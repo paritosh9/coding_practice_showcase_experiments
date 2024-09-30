@@ -28,19 +28,27 @@ class BinaryTree {
       q.push(_root);
       while(!q.empty()){
         Node<T> *node = q.front();
-        if(node->_left == nullptr){
-            Node<T>* newNode = new Node<T>(value);
-            node->_left = newNode;
-            return;
+        q.pop();
+        if((value <= node->_data)){
+            if(node->_left){
+              q.push(node->_left);
+              continue;
+            } else {
+                Node<T>* newNode = new Node<T>(value);
+                node->_left = newNode;
+                return;    
+            }
         }
-        q.push(node->_left) ;
-        if(node->_right == nullptr){
-            Node<T>* newNode = new Node<T>(value);
-            node->_right = newNode;
-            return;
+        if((value > node->_data)) {
+            if(node->_right){
+              q.push(node->_right);
+              continue;
+            } else {
+                Node<T>* newNode = new Node<T>(value);
+                node->_right = newNode;
+                return;    
+            }
         }
-        q.push(node->_right) ;
-        q.pop();  
       }
       return;
     }
@@ -78,8 +86,8 @@ int main()
     std::cout<<"Hello World\n";
 
     BinaryTree<int> binary_tree;
-    binary_tree.insertNode(1);
     binary_tree.insertNode(21);
+    binary_tree.insertNode(1);
     binary_tree.insertNode(33);
     binary_tree.insertNode(44);
     binary_tree.insertNode(12);
