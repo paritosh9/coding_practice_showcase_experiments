@@ -74,7 +74,7 @@ class BinaryTree {
       }
     }
     
-    void inorder_traversal_printTree(){
+    void inorder_traversal_iterative_printTree(){
       if(_root == nullptr){
           std::cout <<"binary treee empty\n";
           return ;
@@ -95,6 +95,9 @@ class BinaryTree {
       }
     }    
     
+    void inorder_traversal_recursive_printTree(){
+    }
+        
     void preorder_traversal_printTree();
     void postorder_traversal_printTree();
     
@@ -119,8 +122,12 @@ int main()
     
     std::cout << "level order : ";
     binary_tree.level_order_traversal_printTree();
-    std::cout << "\n \nin order : ";
-    binary_tree.inorder_traversal_printTree();
+    
+    std::cout << "\n \nin order iterative : ";
+    binary_tree.inorder_traversal_iterative_printTree();
+    
+    std::cout << "\n \nin order recursive : ";
+    binary_tree.inorder_traversal_recursive_printTree();
     
     
     return 0;
