@@ -43,9 +43,9 @@ class BinaryTree {
         q.pop();  
       }
       return;
-    };
+    }
     
-    void printTree(){
+    void level_order_traversal_printTree(){
       if(_root == nullptr){
           std::cout <<"binary treee empty\n";
           return ;
@@ -63,7 +63,14 @@ class BinaryTree {
         }
         q.pop();  
       }
-    };
+    }
+    
+    void inorder_traversal_printTree();
+    void preorder_traversal_printTree();
+    void postorder_traversal_printTree();
+    
+    void deleteNode(T value);
+    
 };
 
 int main()
@@ -81,7 +88,7 @@ int main()
     binary_tree.insertNode(124);
     binary_tree.insertNode(188);
     
-    binary_tree.printTree();
+    binary_tree.level_order_traversal_printTree();
     
     
     return 0;
