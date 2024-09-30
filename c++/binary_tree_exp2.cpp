@@ -135,11 +135,11 @@ int main()
     binary_tree.insertNode(124);
     binary_tree.insertNode(188);
     
-    /*std::cout << "level order : ";
+    std::cout << "level order : ";
     binary_tree.level_order_traversal_printTree();
     
     std::cout << "\n \nin order iterative : ";
-    binary_tree.inorder_traversal_iterative_printTree();*/
+    binary_tree.inorder_traversal_iterative_printTree();
     
     std::cout << "\n \nin order recursive : ";
     binary_tree.inorder_traversal_recursive_printTree(binary_tree._root);
