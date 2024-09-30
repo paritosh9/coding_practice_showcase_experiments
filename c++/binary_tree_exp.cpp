@@ -33,19 +33,37 @@ class BinaryTree {
             node->_left = newNode;
             return;
         }
-        q.push(_root->_left) ;
+        q.push(node->_left) ;
         if(node->_right == nullptr){
             Node<T>* newNode = new Node<T>(value);
             node->_right = newNode;
             return;
         }
-        q.push(_root->_right) ;
+        q.push(node->_right) ;
         q.pop();  
       }
       return;
     };
     
-    void printTree();
+    void printTree(){
+      if(_root == nullptr){
+          std::cout <<"binary treee empty\n";
+          return ;
+      }
+      std::queue<Node<T>*> q;
+      q.push(_root);
+      while(!q.empty()){
+        Node<T> *node = q.front();
+        std::cout << " " << node->_data << " " << std::endl;
+        if(node->_left){
+          q.push(node->_left) ;
+        }
+        if(node->_right){
+          q.push(node->_right) ;
+        }
+        q.pop();  
+      }
+    };
 };
 
 int main()
@@ -62,6 +80,8 @@ int main()
     binary_tree.insertNode(55);
     binary_tree.insertNode(124);
     binary_tree.insertNode(188);
+    
+    binary_tree.printTree();
     
     
     return 0;
