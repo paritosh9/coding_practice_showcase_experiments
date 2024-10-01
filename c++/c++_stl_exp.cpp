@@ -1,7 +1,10 @@
 #include <iostream>
+#include <string>
 #include <vector>
 #include <list>
 #include <stack>
+#include <set>
+#include <map>
 #include <algorithm>
 
 int main()
@@ -39,6 +42,26 @@ int main()
       s.pop();
     }
     
+    //stl std::set<T> ;
+    std::cout<<"\nset stl : ";
+    std::set<int> set1{1,2,3,3,6,7,88,976};
+    for(auto i = set1.begin(); i != set1.end(); i++){
+       std::cout << " " << *i << " "; 
+    }
+    std::cout<<"\nset stl : ";
+    for(auto i : set1){
+       std::cout << " " << i << " "; 
+    }
+    
+    //stl std::map<Key, T> ;
+    std::cout<<"\nmap stl : ";
+    std::map<int, std::string> map1{{1,"one"}, {2,"two"}, {22,"twentytwo"}};
+    for(auto i = map1.begin(); i != map1.end(); i++){
+        std::cout << " \nkey : " << (*i).first << " value : " << (*i).second;
+    }
+    for(auto i : map1){
+        std::cout << " \nkey : " << i.first << " value : " << i.second;
+    }
 
     return 0;
 }
