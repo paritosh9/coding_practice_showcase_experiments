@@ -5,6 +5,7 @@
 #include <stack>
 #include <set>
 #include <map>
+#include <functional>
 #include <algorithm>
 
 int main()
@@ -62,6 +63,31 @@ int main()
     for(auto i : map1){
         std::cout << " \nkey : " << i.first << " value : " << i.second;
     }
-
+    
+    //copy stl
+    // creating vector
+    std::vector<int> v_src = { 1, 2, 3, 4, 55 };
+    std::vector<int> v_dest(5);
+    std::cout<<"\ncopy vector stl : ";
+    copy(v_src.begin(), v_src.end(), v_dest.begin());
+    for(auto i : v_dest){
+      std::cout << " " << i << " ";
+    }
+    
+    auto max_elem = max_element(v_dest.begin(), v_dest.end());
+    std::cout << "\nmax element : " << *max_elem << std::endl;
+    
+    //for_each stl
+    std::vector<int> v_fe{1,3,4,5,66,77,88};
+    for_each(v_fe.begin(), v_fe.end(), [](int &i){i = i+1;} );
+    std::cout<<"\nfor_each stl : ";
+    for(auto i : v_fe){
+      std::cout << " " << i << " ";
+    }
+    
+    //functional stl
+    std::equal_to<int> eq;
+    bool flag = eq(10,10);
+    std::cout<<"\nfunctional functor stl : " << "flag : " << flag << std::endl;;
     return 0;
 }
