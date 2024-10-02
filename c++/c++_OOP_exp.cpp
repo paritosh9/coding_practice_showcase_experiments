@@ -23,17 +23,40 @@ class base{
       }
       
       ~base(){
-          std::cout <<"this is destructor\n";
+          std::cout <<"this is base destructor\n";
       }
       
       virtual void print(){
-          std::cout << "this is print virtual function param : " << param << " id : " << id << std::endl;
+          std::cout << "this is base print virtual function param : " << param << " id : " << id << std::endl;
+      }
+};
+
+template<typename T>
+class derived : public base<T>{
+    private:
+      T param;
+      T id;
+    
+    public:
+      derived(T param, T id){
+        this->param = param;
+        this->id = id;
+        std::cout << "this is parametrized derived constructor with param : " << param << " id : " << id << std::endl;  
+      }
+      
+      ~derived(){
+          std::cout <<"this is derived destructor\n";
+      }
+      
+      void print(){
+          std::cout << "this is derived print virtual function param : " << param << " id : " << id << std::endl;
       }
 };
 
 int main()
 {
     std::cout<<"Hello World\n";
+    
     base<int> B1;
     base<int> B2(1,6);
     base<int> B3(B2);
@@ -42,6 +65,9 @@ int main()
     
     B4.print();
     B5.print();
+    
+    derived<int> D1(15,22);
+    D1.print();
     
     return 0;
 }
