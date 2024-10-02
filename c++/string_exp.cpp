@@ -1,5 +1,4 @@
-#include <iostream>
-#include <string>
+include <string>
 
 int main()
 {
@@ -23,6 +22,7 @@ int main()
       std::cout << "is palindrome\n";    
     }
     
+    // string find
     std::string s2 = "cdb";
     std::size_t found = s.find(s2);
     if(found != std::string::npos){
@@ -30,6 +30,10 @@ int main()
     }else{
       std::cout << "string not found\n";   
     }
+    
+    //string substr
+    std::string s3 = s.substr(3,4);
+    std::cout << "string substr : " << s3 << std::endl;
     
     return 0;
 }
