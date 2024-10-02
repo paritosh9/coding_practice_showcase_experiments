@@ -5,21 +5,32 @@ class base{
     private :
       T param;
       T id;
+      T *data;
+      int size;
     public :
       base() {
           std::cout << "this is constructor\n";
       }
       
-      base(T param, T id){
+      base(T param, T id, int size){
          this->param = param;
          this->id = id;
+         this->size = size;
+         this->data = new T[size];
          std::cout << "this is parametrized constructor with param : " << param << " id : " << id << std::endl; 
       }
       
+      // shallow copy , deep copy constructor
       base(const base& b){
         param = b.param;
         id = b.id;
-        std::cout << "this is copy constructor with param : " << param << " id : " << id << std::endl;
+        //data = b.data
+        //std::cout << "this is shallow copy constructor with param : " << param << " id : " << id << std::endl;
+        data = new T[size];
+        for(int i = size; i< size; i++){
+            data[i] = b.data[i];
+        }
+        std::cout << "this is deep copy constructor with param : " << param << " id : " << id << std::endl;
       }
       
       virtual ~base(){
@@ -29,6 +40,17 @@ class base{
       virtual void print(){
           std::cout << "this is base print virtual function param : " << param << " id : " << id << std::endl;
       }
+      
+      // copy assignment operator
+      base& operator=(const base& b){
+        param = b.param;
+        id = b.id;
+        std::cout << "------ this is assignment operator with param --------: " << param << " id : " << id << std::endl; 
+        return *this;
+      }
+      
+      
+      //move constructor , move assignment operator
 };
 
 template<typename T>
@@ -58,10 +80,12 @@ int main()
     std::cout<<"Hello World\n";
     
     base<int> B1;
-    base<int> B2(1,6);
+    base<int> B2(1,6,10);
     base<int> B3(B2);
     base<int> B4 = B2;
-    base<int> B5(11,65);
+    base<int> B5(11,65,10);
+    B5 = B2;
+    B2.print();
     
     B4.print();
     B5.print();
