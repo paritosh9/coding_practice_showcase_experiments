@@ -21,6 +21,14 @@ class base{
         id = b.id;
         std::cout << "this is copy constructor with param : " << param << " id : " << id << std::endl;
       }
+      
+      ~base(){
+          std::cout <<"this is destructor\n";
+      }
+      
+      virtual void print(){
+          std::cout << "this is print virtual function param : " << param << " id : " << id << std::endl;
+      }
 };
 
 int main()
@@ -30,5 +38,10 @@ int main()
     base<int> B2(1,6);
     base<int> B3(B2);
     base<int> B4 = B2;
+    base<int> B5(11,65);
+    
+    B4.print();
+    B5.print();
+    
     return 0;
 }
