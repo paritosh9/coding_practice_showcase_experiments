@@ -5,7 +5,7 @@ class base{
     private :
       T param;
       T id;
-      T *data;
+      T *data = nullptr;
       int size;
     public :
       base() {
@@ -49,8 +49,31 @@ class base{
         return *this;
       }
       
-      
       //move constructor , move assignment operator
+      base(base&& b){
+          param = b.param;
+          id = b.id;
+          b.param = 0;
+          b.id = 0;
+          data = b.data;
+          b.data = nullptr;
+          std::cout << "------ this is move constructor with param --------: " << param << " id : " << id << std::endl;
+      }
+      
+      base& operator=(base&& b) noexcept{
+          if(this != &b){
+              delete[] data;
+              param = b.param;
+              id = b.id;
+              b.param = 0;
+              b.id = 0;
+              data = b.data;
+              b.data = nullptr;
+              std::cout << "------ this is move assignment operator with param --------: " << param << " id : " << id << std::endl;
+          }
+          //std::cout << "------ this is move assignment operator with param --------: " << param << " id : " << id << std::endl;
+          return *this;
+      }
 };
 
 template<typename T>
@@ -84,7 +107,7 @@ int main()
     base<int> B3(B2);
     base<int> B4 = B2;
     base<int> B5(11,65,10);
-    B5 = B2;
+    //B5 = B2;
     B2.print();
     
     B4.print();
@@ -98,6 +121,11 @@ int main()
     
     B6 = D2;
     delete B6;
+    
+    base<int> B7 = std::move(B5);
+    
+    base<int> B8;
+    B8 = std::move(B7);
     
     
     return 0;
