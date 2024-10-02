@@ -22,7 +22,7 @@ class base{
         std::cout << "this is copy constructor with param : " << param << " id : " << id << std::endl;
       }
       
-      ~base(){
+      virtual ~base(){
           std::cout <<"this is base destructor\n";
       }
       
