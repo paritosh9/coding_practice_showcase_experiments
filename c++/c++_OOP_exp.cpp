@@ -69,5 +69,12 @@ int main()
     derived<int> D1(15,22);
     D1.print();
     
+    base<int> *B6 ;
+    derived<int> * D2 = new derived<int>(122,234);
+    
+    B6 = D2;
+    delete B6;
+    
+    
     return 0;
 }
