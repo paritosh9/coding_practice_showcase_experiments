@@ -6,14 +6,38 @@ void merge(std::vector<T>& array, int left_indx, int mid_indx, int right_indx){
    //std::cout << " now merging \n";
    std::cout << " now merging left indx : " << left_indx <<"  mid_indx : " << mid_indx << "  right_indx : " << right_indx << std::endl;
    
-   if(left_indx == mid_indx){
-        if(array[right_indx] < array[left_indx]){
-            T tmp = array[right_indx];
-            array[right_indx] = array[left_indx];
-            array[left_indx]= array[right_indx];
-        }                 
+   int nL = mid_indx - left_indx + 1;
+   int nR = right_indx - mid_indx;
+   std::vector<int> vL(nL), vR(nR);
+   int count = 0;
+   for(int i = left_indx; i <= mid_indx; i++){
+       vL[count++] = array[i];
    }
-   for(int i = left_indx; i < mid_indx )
+   count = 0;
+   for(int i = mid_indx + 1; i <= right_indx; i++){
+       vR[count++] = array[i];
+   }
+   
+   int i =0, j=0;
+   count = left_indx;
+   while(i<nL && j<nR){
+     if(vL[i] <= vR[j]){
+         array[count++] = vL[i];
+         i++;
+     }else{
+         array[count++] = vR[j];
+         j++;
+     }       
+   }
+   
+   while(i<nL){
+       array[count++] = vL[i];
+       i++;
+   }
+   while(j<nR){
+       array[count++] = vR[j];
+       j++;
+   }
 }
 
 template<typename T>
