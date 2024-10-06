@@ -4,7 +4,7 @@
 
 int main()
 {
-    std::cout<<"Hello World\n";
+   std::cout<<"Hello World\n";
     
     std::vector<int> v1 = {1,2,3,5,62,4,5,555,66,34,23};
     std::sort(v1.begin(), v1.end(),[](int a, int b){return a > b;});
@@ -28,5 +28,16 @@ int main()
     
     std::cout<< "\n";
 
+    // declaring a vector with size 5
+    std::vector<int> vec(55);
+
+    // initializing using iota()
+    std::iota(vec.begin(), vec.end(), 1);
+
+    // printing the vector
+    for (int i = 0; i < 55; i++) {
+        std::cout << vec[i] << " ";
+    }
+    std::cout<< "\n";
     return 0;
 }
