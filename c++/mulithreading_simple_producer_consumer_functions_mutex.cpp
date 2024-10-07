@@ -38,7 +38,8 @@ class Consumer{
 void producer(){
   for(int i = 0; i <5 ; i++){
       std::unique_lock<std::mutex> lock(mtx);
-      cv.wait(lock, [](){return true;});
+      //cv.wait(lock, [](){return true;}); //only need this to wait if we are waiting for buffer full signal or something, 
+      //not needed otherwise
       task_metadata task(i,i+2);
       task_q.push(task);
       std::cout << "for thread : " << std::this_thread::get_id() << " enqueued task id : " << task._id << " data : " << task._data << std::endl;
@@ -89,7 +90,8 @@ int main() {
     std::this_thread::sleep_for(std::chrono::seconds(4));
     {
       std::unique_lock<std::mutex> lock(mtx);
-      cv.wait(lock, [](){return true;});
+      //cv.wait(lock, [](){return true;});//only need this to wait if we are waiting for some signal or something, 
+      //not needed otherwise
       stop = 1;
       cv.notify_all();
     }
