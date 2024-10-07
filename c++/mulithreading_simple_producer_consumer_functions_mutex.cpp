@@ -38,6 +38,7 @@ class Consumer{
 void producer(){
   for(int i = 0; i <5 ; i++){
       std::unique_lock<std::mutex> lock(mtx);
+      cv.wait(lock, [](){return true;});
       task_metadata task(i,i+2);
       task_q.push(task);
       std::cout << "for thread : " << std::this_thread::get_id() << " enqueued task id : " << task._id << " data : " << task._data << std::endl;
@@ -50,7 +51,7 @@ void producer(){
 void consumer(){
    while(true){
         std::unique_lock<std::mutex> lock(mtx);
-        cv.wait(lock, [](){while(!task_q.empty()) return true;
+        cv.wait(lock, [](){if(!task_q.empty()) return true;
                             if(task_q.empty() && stop){
                               return true;}
                             return false;    
@@ -62,9 +63,10 @@ void consumer(){
         }
         task_metadata task = task_q.front();   
         std::cout << "for thread : " << std::this_thread::get_id() << " dequeued & executing task id : " << task._id << " data : " << task._data << std::endl;
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        //std::this_thread::sleep_for(std::chrono::seconds(1));
         task_q.pop();
         global_count += 1;
+        cv.notify_all();
    }
 }
 
@@ -84,11 +86,16 @@ int main() {
     std::thread thrd_consmr1(consumer);
     std::thread thrd_consmr2(consumer);
     
-    
+    std::this_thread::sleep_for(std::chrono::seconds(4));
+    {
+      std::unique_lock<std::mutex> lock(mtx);
+      cv.wait(lock, [](){return true;});
+      stop = 1;
+      cv.notify_all();
+    }
     
     thrd_prod1.join();
     thrd_prod2.join();
-    stop = 1;
     thrd_consmr1.join();
     thrd_consmr2.join();
     
