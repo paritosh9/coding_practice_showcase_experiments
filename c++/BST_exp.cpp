@@ -1,4 +1,5 @@
 #include <iostream>
+#include <queue>
 
 //template<typename T>
 struct Node{
@@ -86,8 +87,17 @@ class BST{
         std::cout << node->_data << " ";
       }
 
-      void level_order(Node* root){
-    
+      void level_order(Node* node){
+        std::queue<Node*> tmpq;
+        tmpq.push(node);
+        while(!tmpq.empty()){
+            //std::cout << "here1\n";
+          Node* tmp = tmpq.front();
+          if(tmp->_left != nullptr) tmpq.push(tmp->_left);
+          if(tmp->_right != nullptr) tmpq.push(tmp->_right);
+          std::cout << tmp->_data << " ";
+          tmpq.pop();
+        }
       }
       
 };
@@ -113,9 +123,15 @@ int main()
     
     bst->inorder(bst->_root);
     std::cout << std::endl;
+    
     bst->preorder(bst->_root);
     std::cout << std::endl;
+    
     bst->postorder(bst->_root);
+    std::cout << std::endl;
+    
+    bst->level_order(bst->_root);
+    std::cout << std::endl;
     
     return 0;
 }
