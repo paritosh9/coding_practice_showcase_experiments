@@ -53,9 +53,52 @@ class BST{
         } 
       }
       
-      void remov(int data){
-        
+      Node* findMin(Node* node){
+          Node* prev_node = node;
+          node = node->_right;
+          while(node->_left != nullptr){
+            prev_node = node;
+            node = node->_left;
+          }
+          return prev_node;
       }
+      
+      //WIP
+      /*void remov(int data){
+        Node* tmp = _root;
+        Node* prev_node = nullptr;
+        
+        while(tmp != nullptr){
+          if(data == tmp->_data){
+            if(tmp->_left == nullptr && tmp->_right == nullptr){
+                delete tmp;
+                if(prev_node) prev_node->_left = nullptr;
+                return;
+            }
+            if(tmp->_left != nullptr){
+                if(prev_node) prev_node->_left = tmp->_left;
+                delete tmp;
+                return;
+            }
+            if(tmp->_right != nullptr){
+                if(prev_node) prev_node->_right = tmp->_right;
+                delete tmp;
+                return;
+            }
+            Node* find_replacement_inorder_succsr = findMin(tmp);
+            tmp->_data = find_replacement_inorder_succsr->_left->_data;
+            delete find_replacement_inorder_succsr->_left;
+            find_replacement_inorder_succsr->_left = nullptr;
+            return;
+          }else if(data < tmp->_data){
+            prev_node = tmp;
+            tmp = tmp->_left;      
+          }else if(data > tmp->_data){
+            prev_node = tmp;
+            tmp = tmp->_right;
+          }
+        }  
+      }*/
 
       void inorder(Node *node){
         
@@ -132,6 +175,22 @@ int main()
     
     bst->level_order(bst->_root);
     std::cout << std::endl;
+    
+    /*bst->remov(55);
+    bst->remov(40);
+    std::cout << std::endl;
+    
+    bst->inorder(bst->_root);
+    std::cout << std::endl;
+    
+    bst->preorder(bst->_root);
+    std::cout << std::endl;
+    
+    bst->postorder(bst->_root);
+    std::cout << std::endl;
+    
+    bst->level_order(bst->_root);
+    std::cout << std::endl;*/
     
     return 0;
 }
