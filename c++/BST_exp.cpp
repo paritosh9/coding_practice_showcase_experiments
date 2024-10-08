@@ -64,14 +64,26 @@ class BST{
         inorder(node->_left);
         std::cout << node->_data << " ";
         inorder(node->_right);
+        
       }
 
-      void preorder(Node* root){
-    
+      void preorder(Node* node){
+        if(node == nullptr){
+            return;
+        }
+        std::cout << node->_data << " ";
+        preorder(node->_left);
+        preorder(node->_right);
+        
       }
 
-      void postorder(Node* root){
-    
+      void postorder(Node* node){
+        if(node == nullptr){
+            return;
+        }
+        postorder(node->_left);
+        postorder(node->_right);
+        std::cout << node->_data << " ";
       }
 
       void level_order(Node* root){
@@ -94,10 +106,16 @@ int main()
     bst->insert(65);
     bst->insert(55);
     bst->insert(45);
+    bst->insert(70);
+    bst->insert(15);
+    bst->insert(35);
+    bst->insert(63);
     
     bst->inorder(bst->_root);
+    std::cout << std::endl;
+    bst->preorder(bst->_root);
+    std::cout << std::endl;
+    bst->postorder(bst->_root);
     
-    
-
     return 0;
 }
