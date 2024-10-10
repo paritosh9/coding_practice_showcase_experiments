@@ -40,13 +40,17 @@ int main()
     
     int arr[] = {1,2,3,5,21,22,11,10};
     int size = 8;
-    //std::unique_ptr<Sorter> sortS = std::make_unique<Sorter>(new BubbleSort());
-    Sorter *sortS = new Sorter(new BubbleSort());
+    std::unique_ptr<Sorter> sortS = std::make_unique<Sorter>(new BubbleSort());
+    //Sorter *sortS = new Sorter(new BubbleSort());
     sortS->sort(arr, size);
     
-    sortS = new Sorter(new MergeSort());
+    //sortS = new Sorter(new MergeSort());
+    //sortS->sort(arr, size);
+    sortS->setStrategy(new MergeSort());
     sortS->sort(arr, size);
-    //std::make_unique(new MergeSort) = std::move(sortS);
+    
+    std::unique_ptr<Sorter> sortS1 = std::make_unique<Sorter>(new MergeSort());
+    sortS->sort(arr, size);
 
     return 0;
 }
