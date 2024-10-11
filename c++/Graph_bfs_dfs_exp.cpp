@@ -41,8 +41,23 @@ class Graph{
       return 1;
     }
     
-    void rmNode(int node);
-    void rmEdge(int src , int dst);
+    void rmNode(int node){
+      //_adj_list[node].clear();
+      std::cout << "removing node : " << node <<std::endl;
+      _adj_list.erase(node);
+      
+      for(auto &i : _adj_list){
+        auto &edges = i.second;
+        //edges.erase(std::remove(edges.begin(), edges.end(), node), edges.end());
+        if(std::find(edges.begin(),edges.end(),node) != edges.end())
+          edges.erase(std::remove(edges.begin(),edges.end(),node));
+      }
+      
+    }
+    
+    void rmEdge(int src , int dst){
+      _adj_list[src].erase(std::remove(_adj_list[src].begin(),_adj_list[src].end() , dst));
+    }
     
     void printGraph(){
       for(auto i : _adj_list){
@@ -142,12 +157,28 @@ int main()
     graph.addNode(4);
     graph.addEdge(0,4);
     graph.addEdge(4,2);
+    graph.addEdge(2,4);
     graph.addEdge(4,3);
     
     graph.printGraph();
     
     graph.BFS(0);
     graph.DFS(0);
+    
+    graph.rmNode(4);
+    
+    graph.printGraph();
+    
+    graph.BFS(0);
+    graph.DFS(0);
+    
+    graph.rmEdge(1,2);
+    graph.printGraph();
+    
+    graph.BFS(0);
+    graph.DFS(0);
+    
+    
     
     return 0;
 }
