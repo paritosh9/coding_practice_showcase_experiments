@@ -37,10 +37,6 @@ class Graph{
       }
     }
     
-    /*void addEdge(Edge *edge){
-          
-    }*/
-    
     void addEdge(Node *src, Node *dst, int weight){
       Edge *edge = new Edge(src, dst, weight);
       _adj_list[src].push_back(edge);  
