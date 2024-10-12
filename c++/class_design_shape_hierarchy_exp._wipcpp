@@ -1,0 +1,71 @@
+#include <iostream>
+#define pi 3.14
+
+class Shape{
+  private :
+    
+  public :
+    Shape(){
+      std::cout << "Shape constructor\n";    
+    }
+    virtual ~Shape(){
+      std::cout << "Shape destructor\n";
+    }
+    
+    virtual float calculateArea() const = 0;
+    virtual float calculatePerimeter() const = 0;
+    /*virtual float calculateArea(){return 0;};
+    virtual float calculatePerimeter(){return 0;};*/
+  
+};
+
+class Circle : public Shape {
+  private :
+    float _radius = 0;
+    
+  public :
+    Circle(float radius) : _radius(radius){
+      std::cout << "Circle constructor\n";    
+    }
+    
+    ~Circle(){
+      std::cout << "Circle destructor\n";
+    }
+    
+    float calculateArea() const{
+      return pi*_radius*_radius;    
+    }  
+    
+    float calculatePerimeter() const{
+      return 2*pi*_radius;    
+    }
+};
+
+class Rectangle : public Shape {
+  private :
+  
+  public :
+      
+};
+
+class Triangle : public Shape {
+  private :
+  
+  public :
+      
+};
+
+int main()
+{
+    std::cout<<"Hello World\n";
+    
+    //Shape *shape = new Shape();
+    Shape *shape = new Circle(3);
+    
+    std::cout << shape->calculateArea() << " \n";
+    std::cout << shape->calculatePerimeter() << " \n";
+    
+    delete shape;
+
+    return 0;
+}
