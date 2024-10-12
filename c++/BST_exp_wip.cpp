@@ -41,26 +41,29 @@ class BST{
     }
     
     Node* removeNode(Node *node, int val){
+      if(node == nullptr){
+        return nullptr;
+      }
+      
       if(val < node->_data){
         node->_left = removeNode(node->_left , val);      
       } else if(val > node->_data){
           node->_right = removeNode(node->_right , val);            
       } else{
           if(node->_left == nullptr){
-            node->_data = node->_right->_data;
-            delete node->_right;
-            node->_right == nullptr;
+            Node* tmp = node->_right;
+            delete node;
+            return tmp;
           } else if(node->_right == nullptr){
-              node->_data = node->_left->_data;
-              delete node->_left;
-              node->_left == nullptr;    
-          } else {
-              Node *temp = findMin(node->_right);  
-              
+              Node* tmp = node->_left;
+              delete node;
+              return tmp;    
           }
-      }
       
-      
+          Node *tmp = findMin(node->_right); 
+          node->_data = tmp->_data;
+          node->_right = removeNode(node->_right, tmp->_data);
+      }  
       return node;      
     }
     
@@ -85,6 +88,7 @@ class BST{
       
       void inOrderTraversal(){
           inOrderTraversal(_root);
+          std::cout<<std::endl;
       }
     
 };
@@ -94,12 +98,19 @@ int main()
     std::cout << "Hello World\n";
     
     BST bst;
-    bst.insertNode(100);
-    bst.insertNode(12);
-    bst.insertNode(22);
-    bst.insertNode(14);
-    bst.insertNode(114);
+    bst.insertNode(50);
+    bst.insertNode(30);
+    bst.insertNode(70);
+    bst.insertNode(20);
+    bst.insertNode(40);
+    bst.insertNode(60);
+    bst.insertNode(80);
     
+    std::cout << "Inorder traversal: ";
+    bst.inOrderTraversal();
+    
+    bst.removeNode(30);
+    std::cout << "Inorder traversal after removing 30: ";
     bst.inOrderTraversal();
 
     return 0;
