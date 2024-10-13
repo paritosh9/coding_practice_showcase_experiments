@@ -11,12 +11,15 @@ class MemoryAllocator{
     std::map<void*, size_t> _mem_free_map; //size, start address of free contiguous memchunk
     std::map<void*, size_t> _mem_alloc_map; //
     
+    std::mutex mtx;
+    
   public :
     MemoryAllocator(size_t size):_size(size){
         _mem_free_map[nullptr] = size;
     }
     
     void allocate(size_t size){
+      std::lock_guard<std::mutex> lk_grd(mtx);
       for(auto i : _mem_free_map){
         if(size <= i.second){
           size_t tmp_size = i.second;
@@ -37,6 +40,7 @@ class MemoryAllocator{
     }
     
     void deallocate(void* addr){
+      std::lock_guard<std::mutex> lk_grd(mtx);
       if(_mem_alloc_map.find(addr) == _mem_alloc_map.end()){
         std::cout << "Trying to deallocate unallocated memory, unsuccessful\n";  
         return;
