@@ -26,11 +26,11 @@ class exampleClass{
     //deep copy constructor
     exampleClass(const exampleClass &example){
       std::cout << "\nexampleClass copy constructor\n";
-      this->_data = example.getData();
-      this->_id = example.getId();
+      this->_data =example._data;
+      this->_id = example._id;
       
       this->_fill = new int[16];
-      int *copy_ptr = example.getFill();
+      int *copy_ptr = example._fill;
       for(int i = 0; i<16; i++){
         *(_fill+i) = *(copy_ptr+i);  
       }
@@ -45,9 +45,9 @@ class exampleClass{
     //copy assignment operator
     exampleClass& operator=(const exampleClass& example){
       if(this != &example){
-        this->_data = example.getData();
-        this->_id = example.getId();
-        this->_fill = example.getFill();        
+        this->_data =example._data;
+        this->_id = example._id;
+        this->_fill = example._fill;        
       }
       
       std::cout << "\nexampleClass copy assignment operator\n";
