@@ -27,6 +27,9 @@ class MemoryAllocator{
           void *start_addr_to_return = i.first;
           _mem_free_map.erase(i.first);
           
+          //we could have used static_cast instead of reinterpret_cast 
+          //if we used int instead of size_t for size
+          //int new_strt_addrs = static_cast<int>(i.first) + size;
           size_t new_strt_addrs = reinterpret_cast<size_t>(i.first) + size;
           //std::cout << "new_strt_addrs : " << new_strt_addrs << std::endl;
           start_addr = reinterpret_cast<void*> (new_strt_addrs);
