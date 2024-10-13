@@ -11,7 +11,7 @@
 std::queue<int> t_safe_q;
 std::mutex mtx;
 std::condition_variable cv;
-int count = 0;
+//int count = 0;
 bool done = false;
 
 class Producer{
@@ -20,14 +20,15 @@ class Producer{
   public :
     void produce(){
       //std::cout << "in producer\n";
-      while(true){
+      //while(true){
+      for(int count = 0; count < 100 ; count++){
         {
           std::unique_lock<std::mutex> lock(mtx);
           cv.wait(lock, [&](){while ((count >= 100) || (!t_safe_q.empty() && !done)); return 1;});
           if(t_safe_q.empty() && done){
               return;
           }
-          t_safe_q.push(count++);
+          t_safe_q.push(count);
         }
       }
     }
@@ -49,7 +50,7 @@ class Consumer{
           }
           std::cout << t_safe_q.front() << " ";
           t_safe_q.pop();
-          count--;
+          //count--;
         }  
       }
     }
