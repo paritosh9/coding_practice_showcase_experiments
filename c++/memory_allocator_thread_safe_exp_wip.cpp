@@ -18,12 +18,13 @@ class MemoryAllocator{
         _mem_free_map[nullptr] = size;
     }
     
-    void allocate(size_t size){
+    void* allocate(size_t size){
       std::lock_guard<std::mutex> lk_grd(mtx);
       for(auto i : _mem_free_map){
         if(size <= i.second){
           size_t tmp_size = i.second;
           void *start_addr = i.first;
+          void *start_addr_to_return = i.first;
           _mem_free_map.erase(i.first);
           
           size_t new_strt_addrs = reinterpret_cast<size_t>(i.first) + size;
@@ -31,12 +32,12 @@ class MemoryAllocator{
           start_addr = reinterpret_cast<void*> (new_strt_addrs);
           tmp_size = tmp_size - size;
           _mem_free_map[start_addr] = tmp_size;
-          _mem_alloc_map[start_addr] = size;
-          return;
+          _mem_alloc_map[start_addr_to_return] = size;
+          return start_addr_to_return;
         }      
       }
       std::cout << " memory is full , couldn't find a free block of required size\n";
-      return;
+      return nullptr;
     }
     
     void deallocate(void* addr){
@@ -74,24 +75,24 @@ int main()
     MemoryAllocator mem_alloc(1024);
     mem_alloc.printFreeList();
     
-    mem_alloc.allocate(64);
+    void *ptr = (mem_alloc.allocate(16*sizeof(int)));
     mem_alloc.printFreeList();
     
-    mem_alloc.allocate(256);
+    ptr = mem_alloc.allocate(256);
     mem_alloc.printFreeList();
     
-    mem_alloc.allocate(256);
+    ptr = mem_alloc.allocate(256);
     mem_alloc.printFreeList();
     
-    mem_alloc.allocate(256);
+    ptr = mem_alloc.allocate(256);
     mem_alloc.printFreeList();
     
-    mem_alloc.allocate(256);
+    int *ptr1 = static_cast<int*>(mem_alloc.allocate(256));
     mem_alloc.printFreeList();
     
     mem_alloc.printAllocList();
     
-    void *ptr = reinterpret_cast<void*> (320);
+    ptr = reinterpret_cast<void*> (320);
     mem_alloc.deallocate(ptr);
     mem_alloc.printAllocList();
     mem_alloc.printFreeList();
