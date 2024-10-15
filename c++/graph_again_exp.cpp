@@ -3,6 +3,7 @@
 #include <vector>
 #include <set>
 #include <queue>
+#include <stack>
 
 class Node{
   private :
@@ -81,10 +82,35 @@ class Graph{
         q.pop();
       }
       std::cout << std::endl;
+      _visited_nodes.clear();
     }
     
     
-    void dfs(Node *node);
+    // dfs basically uses stack , so we can use recursion
+    // keep track of visited nodes
+    void dfs(Node *node){
+      /*if(node == nullptr){
+        return;      
+      } */   
+      
+      std::stack<Node*> stk;
+      stk.push(node);
+      _visited_nodes.insert(node);
+      Node *temp;
+      
+      while(!stk.empty()){
+        temp = stk.top();
+        std::cout << temp->_data << " ";
+        stk.pop();
+        for(auto i : _adj_list[temp]){
+          if(_visited_nodes.find(i) == _visited_nodes.end()){
+            stk.push(i);
+             _visited_nodes.insert(i);
+          }
+        }
+      }
+      std::cout << std::endl;
+    }
     
 };
 
@@ -103,6 +129,8 @@ int main()
     graph.addNode(n3);
     Node *n4 = new Node(4);
     graph.addNode(n4);
+    Node *n5 = new Node(5);
+    graph.addNode(n5);
     
     graph.addEdge(n0,n1);
     graph.addEdge(n0,n2);
@@ -111,10 +139,13 @@ int main()
     graph.addEdge(n2,n3);
     graph.addEdge(n3,n0);
     graph.addEdge(n1,n4);
+    graph.addEdge(n2,n5);
     
     graph.printGraph();
     
     graph.bfs(n3);
+    
+    graph.dfs(n3);
     
     return 0;
 }
