@@ -169,12 +169,13 @@ int main()
     Edge *e0 = new Edge(n0,n1,4);
     Edge *e1 = new Edge(n0,n2,15);
     Edge *e2 = new Edge(n0,n3,21);
-    Edge *e3 = new Edge(n1,n2,1);
+    Edge *e3 = new Edge(n1,n3,1);
     Edge *e4 = new Edge(n1,n4,7);
     Edge *e5 = new Edge(n1,n5,9);
-    Edge *e6 = new Edge(n2,n3,11);
+    Edge *e6 = new Edge(n3,n2,11);
     Edge *e7 = new Edge(n3,n4,5);
     Edge *e8 = new Edge(n4,n5,14);
+    Edge *e9 = new Edge(n5,n2,14);
     //Edge *e9 = new Edge(n5,n1,22);
     //Edge *e10 = new Edge(n4,n1,15);
     
@@ -187,6 +188,7 @@ int main()
     graph.addEdge(e6);
     graph.addEdge(e7);
     graph.addEdge(e8);
+    graph.addEdge(e9);
     //graph.addEdge(e9);
     //graph.addEdge(e10);
     
