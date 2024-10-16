@@ -106,29 +106,40 @@ class Graph{
       _shortest_path_route.push_back(node);
       
       int smallest_weight = 1000;
+      Node *nextNode = node;
+      _shortest_paths_dist[node] = 0;
       
       while(_visited_nodes.size() < _adj_list.size()){
         std::cout << "inside while loop\n";
         std::cout << _visited_nodes.size() << " " << _adj_list.size() << std::endl;
         _visited_nodes.insert(node);
+        std::cout << "inserting node : " << node->_data << std::endl;
+        node = nextNode;
+        smallest_weight = 1000;
         for(auto neighbour : _adj_list[node]){
+          if(_visited_nodes.find(neighbour) != _visited_nodes.end()){
+            continue;      
+          }    
           if(_shortest_paths_dist[neighbour] > _shortest_paths_dist[node] + _edgeWeights[std::make_pair(node, neighbour)]){
             _shortest_paths_dist[neighbour] = _shortest_paths_dist[node] + _edgeWeights[std::make_pair(node, neighbour)];        
           }
-          if((smallest_weight > _edgeWeights[std::make_pair(node, neighbour)]) && _visited_nodes.find(neighbour) == _visited_nodes.end()){
-            node = neighbour;
+          if(smallest_weight > _edgeWeights[std::make_pair(node, neighbour)]){
+            nextNode = neighbour;
             smallest_weight = _edgeWeights[std::make_pair(node, neighbour)];
           }
         }
-        _shortest_path_route.push_back(node);
+        if(_visited_nodes.find(node) == _visited_nodes.end()){
+          _shortest_path_route.push_back(node);
+        }
       }
        
       for(auto i : _shortest_paths_dist){
         std::cout << "Node : " << i.first->_data << " , shortest path weight : " << i.second << std::endl;    
       }
     
+      std::cout << "Shortest route : ";
       for(auto i : _shortest_path_route) {
-        std::cout << "Shortest route : " << i << " "  ;  
+        std::cout << i->_data << " "  ;  
       }
       std::cout << std::endl;
     }
@@ -155,14 +166,14 @@ int main()
     graph.addNode(n4);
     graph.addNode(n5);
     
-    Edge *e0 = new Edge(n0,n1,5);
+    Edge *e0 = new Edge(n0,n1,4);
     Edge *e1 = new Edge(n0,n2,15);
-    Edge *e2 = new Edge(n0,n3,4);
-    Edge *e3 = new Edge(n1,n2,52);
+    Edge *e2 = new Edge(n0,n3,21);
+    Edge *e3 = new Edge(n1,n2,1);
     Edge *e4 = new Edge(n1,n4,7);
     Edge *e5 = new Edge(n1,n5,9);
-    Edge *e6 = new Edge(n2,n4,11);
-    Edge *e7 = new Edge(n3,n5,5);
+    Edge *e6 = new Edge(n2,n3,11);
+    Edge *e7 = new Edge(n3,n4,5);
     Edge *e8 = new Edge(n4,n5,14);
     //Edge *e9 = new Edge(n5,n1,22);
     //Edge *e10 = new Edge(n4,n1,15);
