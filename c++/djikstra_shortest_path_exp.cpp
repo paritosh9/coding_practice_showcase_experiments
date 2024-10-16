@@ -1,4 +1,9 @@
 #include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <set>
+#include <pair>
+#include <algorithm>
 
 class Node{
   private :
@@ -14,29 +19,78 @@ class Node{
 class Edge{
   private :
     Node *_src, *_dst;
-    int _weight;
+    //int _weight;
   
   public :
+    int _weight;
     Edge(Node *src, Node *dst, int weight):_src(src), _dst(dst), _weight(weight){
       std::cout <<"Edge constructor with src : " << src->_data << " dst : " << dst->_data << " weight : " << _weight << std::endl;    
     }
+    
+    int getEdgeWeight(){
+      return _weight;
+    }
+    
   
 };
 
 class Graph{
-  private :     
+  private : 
+    std::unordered_map<Node*, std::vector<Node*>> _adj_list;
+    std::vector<std::vector<int>> _weights_adj_list;
+    //std::fill(_weights_adj_list.start(), _weights_adj_list.end(), 1000);
+    std::set<Node*> _visited_nodes;
+    std::unordered_map<Node*, int> _shortest_paths_dist;
+    std::vector<Node*> _shortest_path_route;
+    
+    std::map<std::pair<Node*, Node*>>,int> edgeWeights; 
 
   public :
   
-    void addNode();
+    void addNode(Node *node){
+      //if()    
+    };
     
-    void addEdge();
+    void addEdge(){
+        
+      edgeWeights[make_pair(src,dst)] = weight;
+    }
     
     void printGraph();
     
-    void djikstra(){
-        
-    }
+    // willl start from Node *node 
+    // will visit neighbouring nodes and store distances from node to them in _shortest_paths_dist
+    // will select shortest adjacent node as next node
+    // will check its neighbouring nodes and update _shortest_paths_dist if any calculated distances less than earlier
+    // will select closest neighbour and continue above
+    // will add nodes to _visited_nodes as we move, and when _visited_nodes == number of nodes in _graph will stop
+    // will print _shortest_paths_dist and _shortest_path_route
+    void djikstra(Node *node){
+      int  size = _adj_list.size();
+      for(int i = 0; i < size ; i++){
+        for(int j = 0; j < size ; j++){
+          _weights_adj_list[i][j] = 1000;    
+        }      
+      }  
+      
+      for(auto i : _adj_list){
+        _shortest_paths_dist[i.first] = 1000;       
+      }
+      
+      _shortest_path_route.push_back(node);
+      
+      while(_visited_nodes.size() < _adj_list.size()){
+        _visited_nodes.insert(node);
+        for(auto neighbour : _adj_list[node]){
+          if(_shortest_paths_dist[neighbour] > _shortest_paths_dist[node] + edgeWeight(node, neighbour) ){
+            _shortest_paths_dist[neighbour] = _shortest_paths_dist[node] + edgeWeight(node, neighbour);        
+          }
+          if(smallest_weight > edgeWeight(node, neighbour)){
+            node = neighbour;
+          }
+          _shortest_path_route.push_back(node);
+        }
+       }
 };
 
 int main()
@@ -44,6 +98,7 @@ int main()
     std::cout<<"Hello World\n";
     
     Graph graph;
+    Node *n0 = new Node(0);
     /*graph.addNode(n0);
     graph.addNode(n1);
     graph.addNode(n2);
@@ -63,7 +118,7 @@ int main()
     graph.addEdge(n5,n1,22);
     graph.addEdge(n4,n1,15);*/
     
-    graph.djikstra();
+    graph.djikstra(n0);
     
 
     return 0;
