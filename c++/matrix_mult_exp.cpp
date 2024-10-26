@@ -8,17 +8,15 @@ const int matrix_A_cols = 128;
 const int matrix_B_rows = 128;
 const int matrix_B_cols = 128;
 
-std::vector<std::vector<int>> _matrix_A;
-std::vector<std::vector<int>> _matrix_B;
-std::vector<std::vector<int>> _matrix_C;
+std::vector<std::vector<int>> _matrix_A(matrix_A_rows, std::vector<int>(matrix_A_cols,0));
+std::vector<std::vector<int>> _matrix_B(matrix_B_rows, std::vector<int>(matrix_B_cols,0));
+std::vector<std::vector<int>> _matrix_C(matrix_A_rows, std::vector<int>(matrix_B_cols,0));
 
 void matrix_init(int rows, int cols, std::vector<std::vector<int>> &_matrix){
   for(int i = 0; i < rows ; i++){
-      std::vector<int> _vec;
       for(int j = 0; j < cols ; j++){
-        _vec.push_back(i*j);  
+        _matrix[i][j] = i*j;
       }
-      _matrix.push_back(_vec);
     }
 }
 
@@ -32,15 +30,15 @@ void matrix_display(int rows, int cols, std::vector<std::vector<int>> &_matrix){
 
 void matrix_mult(){
   for(int i = 0 ; i < matrix_A_rows ; i++){
-    std::vector<int> _vec_C;  
+    //std::vector<int> _vec_C;  
     for(int j = 0 ; j < matrix_B_cols ; j++){
-      int value = 0;
+      //int value = 0;
       for(int k = 0 ; k < matrix_A_cols ; k++){ 
-        value += _matrix_A[i][k] * _matrix_B[k][j];  
+        _matrix_C[i][k] += _matrix_A[i][k] * _matrix_B[k][j];  
       }
-      _vec_C.push_back(value);
+      //_vec_C.push_back(value);
     }
-    _matrix_C.push_back(_vec_C);
+    //_matrix_C.push_back(_vec_C);
   }      
 }
 
@@ -51,16 +49,16 @@ void tiled_matrix_mult(){
        for (int jj = 0; jj < matrix_B_cols; jj += BLOCK_SIZE) {
            for (int kk = 0; kk < matrix_A_cols; kk += BLOCK_SIZE) {
                for (int i = ii; i < ii + BLOCK_SIZE; ++i) {
-                   std::vector<int> _vec_C;
+                   //std::vector<int> _vec_C;
                    for (int j = jj; j < jj + BLOCK_SIZE; ++j) {
-                       int value = 0;
+                       //int value = 0;
                        for (int k = kk; k < kk + BLOCK_SIZE; ++k) {
-                           value += _matrix_A[i][k] * _matrix_B[k][j];
-                           //C[i][j] += A[i][k] * B[k][j];
+                           //value += _matrix_A[i][k] * _matrix_B[k][j];
+                           _matrix_C[i][k] += _matrix_A[i][k] * _matrix_B[k][j];
                        }
-                       _vec_C.push_back(value);
+                       //_vec_C.push_back(value);
                    }
-                   _matrix_C.push_back(_vec_C);
+                   //_matrix_C.push_back(_vec_C);
                }
            }
        }
@@ -73,10 +71,10 @@ int main()
     
     std::chrono::time_point<std::chrono::system_clock> start, end;
     
-    /*std::vector<std::vector<int>> _matrix_A;
-    std::vector<std::vector<int>> _matrix_B;
-    std::vector<std::vector<int>> _matrix_C;
-    */
+    /*std::vector<std::vector<int>> _matrix_A(matrix_A_rows, std::vector<int>(matrix_A_cols,0));
+    std::vector<std::vector<int>> _matrix_B(matrix_B_rows, std::vector<int>(matrix_B_cols,0));
+    std::vector<std::vector<int>> _matrix_C(matrix_A_rows, std::vector<int>(matrix_B_cols,0));*/
+    
     
     // matrix A init
     matrix_init(matrix_A_rows, matrix_A_cols, _matrix_A);
