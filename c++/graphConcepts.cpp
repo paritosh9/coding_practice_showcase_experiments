@@ -24,6 +24,22 @@ class graph{
             cout << endl;
         }
     }
+    
+    bool dfs(int node, vector<bool> &visited){
+        
+    }
+    
+    bool hasCycle(){
+        vector<bool> visited(_vertices, false);
+        for(int i=0; i<_vertices; i++){
+            if(!visited[i]){
+                if(dfs(i,visited)){
+                    return true
+                }
+            }
+        }
+        return false
+    }
 };
 
 int main()
@@ -44,4 +60,5 @@ int main()
 
     return 0;
 }
+
 
