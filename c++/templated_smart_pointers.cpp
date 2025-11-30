@@ -58,8 +58,23 @@ int main(){
     cout << "shared ptr use count - " << sharedPtr2.use_count() << endl;
     
     ///////// weak_ptr ///////////////////
+    cout <<endl;
+    cout <<" weak ptr - " << endl;
+    weak_ptr<Rectangle<int,int>> weakPtr1 = sharedPtr2;
     
+    if(auto tmpPtr = weakPtr1.lock()){
+        tmpPtr->printRect();
+    }
+    cout << "weak ptr use count - " << weakPtr1.use_count() << endl;
+    
+    sharedPtr2.reset();
+    cout << "weak ptr use count - " << weakPtr1.use_count() << endl;
+    
+     if (weakPtr1.expired()) {
+        std::cout << "Rectangle no longer exists\n";
+    }
     
     
     return 1;
 }
+
