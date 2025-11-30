@@ -3,13 +3,14 @@
 
 using namespace std;
 
-template<typename T>
+template<typename T1, typename T2>
 class Rectangle{
     private :
-        T _len, _width;
+        T1 _len;
+        T2 _width;
     
     public:
-        Rectangle(T len, T width) : _len(len), _width(width){
+        Rectangle(T1 len, T2 width) : _len(len), _width(width){
             cout << "Constructed Rectangle with len : " << _len << " width : " << _width << endl;
         }
         
@@ -25,10 +26,10 @@ int main(){
     
     ///////// unique_ptr ///////////////////
     cout <<" unique ptr - " << endl;
-    unique_ptr<Rectangle<int>> rectPtr1(new Rectangle<int>(10,20));
+    unique_ptr<Rectangle<int,int>> rectPtr1(new Rectangle<int,int>(10,20));
     rectPtr1->printRect();
     
-    unique_ptr<Rectangle<int>> rectPtr2 = move(rectPtr1);
+    unique_ptr<Rectangle<int,int>> rectPtr2 = move(rectPtr1);
     
     if(rectPtr1 != nullptr){
         rectPtr1->printRect();
@@ -38,17 +39,17 @@ int main(){
     
     rectPtr2->printRect();
     
-    unique_ptr<Rectangle<float>> rectPtr3 = make_unique<Rectangle<float>>(25,50);
+    unique_ptr<Rectangle<float,float>> rectPtr3 = make_unique<Rectangle<float,float>>(25,50);
     rectPtr3->printRect();
     
     ///////// shared_ptr ///////////////////
     cout <<endl;
     cout <<" shared ptr - " << endl;
-    shared_ptr<Rectangle<int>> sharedPtr1 = make_shared<Rectangle<int>>(40,80);
+    shared_ptr<Rectangle<int,int>> sharedPtr1 = make_shared<Rectangle<int,int>>(40,80);
     sharedPtr1->printRect();
     cout << "shared ptr use count - " << sharedPtr1.use_count() << endl;
     
-    shared_ptr<Rectangle<int>> sharedPtr2(sharedPtr1);
+    shared_ptr<Rectangle<int,int>> sharedPtr2(sharedPtr1);
     sharedPtr2->printRect();
     cout << "shared ptr use count - " << sharedPtr1.use_count() << endl;
     cout << "shared ptr use count - " << sharedPtr2.use_count() << endl;
@@ -57,5 +58,8 @@ int main(){
     cout << "shared ptr use count - " << sharedPtr2.use_count() << endl;
     
     ///////// weak_ptr ///////////////////
+    
+    
+    
     return 1;
 }
