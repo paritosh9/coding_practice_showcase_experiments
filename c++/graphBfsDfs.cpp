@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <stack>
 #include <algorithm>
 
 using namespace std;
@@ -79,8 +80,10 @@ class Graph{
                    visited.push_back(node);
                    cout << node << " ";
                    for(int j=0; j<graph[node].size(); j++){
-                       if(graph[node][j] == 1){
+                       if((node != j) && graph[node][j] == 1){
+                           if(find(visited.begin(), visited.end(), j) == visited.end()){
                            bfsQ.push(j);
+                           }
                        }
                    }
                 }
@@ -89,6 +92,44 @@ class Graph{
         }
         
         void dfs(){
+            stack<int> dfsStack;
+            vector<int> visited;
+            
+            cout << endl << "DFS graph traversal " << endl;
+            for(int i=0; i<graph.size(); i++){
+                if(find(visited.begin(), visited.end(), i) != visited.end()){
+                    continue;
+                }
+                
+                dfsStack.push(i);
+                while(!dfsStack.empty()){
+                    int node = dfsStack.top();
+                    dfsStack.pop();
+                    if(find(visited.begin(), visited.end(), node) != visited.end()){
+                    continue;
+                   }
+                   cout << node << " ";
+                   visited.push_back(node);
+                    
+                    for(int j=0; j<graph[node].size(); j++){
+                        if(find(visited.begin(), visited.end(), j) != visited.end()){
+                            continue;
+                        }  
+                        if((node != j) && graph[node][j] == 1){
+                            dfsStack.push(j);
+                        }
+                    }
+                
+                }
+            }
+            
+        }
+        
+        void hasCycle(){
+            
+        }
+        
+        void djikstra(){
             
         }
         
@@ -108,7 +149,9 @@ int main() {
     graph->addEdge(4,3);
     
     graph->printGraph();
+    
     graph->bfs();
+    graph->dfs();
     
     delete graph;
 
