@@ -38,6 +38,10 @@ class Graph{
             this->printGraph();
         }
         
+        void resetVisitedVec(){
+            visited.assign(_nodeCnt, false);
+        }
+        
         void printGraph(){
             cout << endl;
             if(graph.empty()){
@@ -141,13 +145,39 @@ class Graph{
             
         }
         
-        bool dfsCycle(int src , int parent, vector<bool> &visited){
-            return 0;    
+        bool dfsCycleDetection(int src , int parent, vector<bool> &visited){
+            cout << src << " ";
+            visited[src] = true;
+            
+            for(int i=0; i<graph[src].size(); i++){
+                if(i == src) continue;
+                if(graph[src][i] != 0 && !visited[i]){
+                    if(dfsCycleDetection(i,src,visited)){
+                        return true;
+                    }
+                } else if(graph[src][i] != 0 && i != parent){
+                    cout <<endl << i << " " << src << endl;
+                    return true;
+                }    
+            }
+            
+            return false;    
         }
         
         int hasCycle(vector<bool> &visited){
-                   
+            cout <<endl << "in cycle detection" << endl;
+            for(int i=0; i<graph.size(); i++){
+                if(visited[i]){
+                    continue;
+                }
+                
+                if(dfsCycleDetection(i,-1,visited)){
+                    cout << "cycle detected " << endl;
+                    return 1;
+                }
+            }
             
+            cout << " no cycle detected " << endl;
             return 0;
             
         
@@ -207,6 +237,9 @@ int main() {
     graph->dfs();
     cout << endl << "dfs recursion" << endl;
     graph->dfsRecursion(4);
+    graph->resetVisitedVec();
+    cout << endl << "dfs recursion" << endl;
+    graph->dfsRecursion(0);
     
     //graph->hasCycle();
     vector<bool> visited(nodecnt , false);
