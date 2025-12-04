@@ -3,6 +3,7 @@
 #include <queue>
 #include <stack>
 #include <algorithm>
+#include <utility>
 
 using namespace std;
 
@@ -10,9 +11,12 @@ class Graph{
     private :
         vector<vector<int>> graph;
         int _nodeCnt;
+        
     
     public:
+        vector<bool> visited;
         Graph(int nodeCnt) : _nodeCnt(nodeCnt), graph(nodeCnt, vector<int>(nodeCnt)){
+            visited.assign(nodeCnt, false);
             for(int i=0; i<nodeCnt; i++){
                 for(int j=0; j<nodeCnt; j++){
                     if(i != j){
@@ -48,14 +52,14 @@ class Graph{
             }
         }
         
-        void addEdge(int src, int dst){
-            graph[src][dst] = 1;
-            graph[dst][src] = 1;
+        void addEdge(int src, int dst, int weight){
+            graph[src][dst] = weight;
+            graph[dst][src] = weight;
         }
         
         void removeEdge(int src, int dst){
             graph[src][dst] = 0;
-            graph[dst][src] = 1;    
+            graph[dst][src] = 0;    
         }
         
         void bfs(){
@@ -125,33 +129,94 @@ class Graph{
             
         }
         
-        void hasCycle(){
+        void dfsRecursion(int src){//, vector<bool> &visited){
+            cout << src << " ";
+            visited[src] = true;
+            
+            for(int i=0; i<graph[src].size(); i++){
+                if(!visited[i] && graph[src][i] != 0){
+                    dfsRecursion(i);
+                }
+            }
             
         }
         
-        void djikstra(){
+        bool dfsCycle(int src , int parent, vector<bool> &visited){
+            return 0;    
+        }
+        
+        int hasCycle(vector<bool> &visited){
+                   
+            
+            return 0;
+            
+        
+        }
+        
+        vector<int> djikstra(int src){
+            vector<int> dist(_nodeCnt, 2000);
+            dist[src] = 0;
+            pair<int,int> toppq;
+            
+            priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+            pq.push({0,src});
+            
+            vector<bool> visited(_nodeCnt, false);
+            
+            while(!pq.empty()){
+                toppq = pq.top();
+                pq.pop();
+                
+                if(visited[toppq.second]) continue;
+                visited[toppq.second] = true;
+                
+                for(int i=0; i< graph[toppq.second].size(); i++){
+                    if(graph[toppq.second][i] == 0){
+                        continue;
+                    }
+                    if(dist[toppq.second] +  graph[toppq.second][i] < dist[i]){
+                        dist[i] = dist[toppq.second] + graph[toppq.second][i];
+                        pq.push({dist[i], i});
+                    }
+                }
+            }
+            
+            return dist;
             
         }
         
 };
 
 int main() {
-    
-    Graph *graph = new Graph(5);
+    int nodecnt = 6;
+    Graph *graph = new Graph(nodecnt);
     graph->printGraph();
     
-    graph->addEdge(0,2);
-    graph->addEdge(1,2);
-    graph->addEdge(1,4);
-    graph->addEdge(2,4);
-    graph->addEdge(3,1);
-    graph->addEdge(4,0);
-    graph->addEdge(4,3);
+    //graph->addEdge(0,2);
+    graph->addEdge(1,2,2);
+    graph->addEdge(1,4,5);
+    graph->addEdge(2,4,4);
+    graph->addEdge(4,0,1);
+    graph->addEdge(0,1,9);
+    graph->addEdge(2,3,11);
+    graph->addEdge(0,5,11);
     
     graph->printGraph();
     
     graph->bfs();
     graph->dfs();
+    cout << endl << "dfs recursion" << endl;
+    graph->dfsRecursion(4);
+    
+    //graph->hasCycle();
+    vector<bool> visited(nodecnt , false);
+    graph->hasCycle(visited);
+    
+    vector<int> dijkstra_op = graph->djikstra(0);
+    cout << endl;
+    for(auto i : dijkstra_op){
+        cout << i << " ";
+    }
     
     delete graph;
 
