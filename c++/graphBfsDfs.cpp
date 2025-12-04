@@ -177,7 +177,50 @@ class Graph{
                 }
             }
             
-            cout << " no cycle detected " << endl;
+            cout <<endl << " no cycle detected " << endl;
+            return 0;
+            
+        
+        }
+        
+        bool dfsCycleDetectionDirectedGraph(int src, vector<bool> &visited, vector<bool> &recursionVec){
+            cout << src << " ";
+            visited[src] = true;
+            recursionVec[src] = true;
+            
+            for(int i=0; i<graph[src].size(); i++){
+                if(i == src) continue;
+                if(graph[src][i] != 0 && !visited[i]){
+                    if(dfsCycleDetectionDirectedGraph(i,visited,recursionVec)){
+                        return true;
+                    }
+                } else if(graph[src][i] != 0 && recursionVec[i] == true){
+                    cout <<endl << i << " " << src << endl;
+                    return true;
+                }
+            }
+            
+            return false;
+            
+        }
+        
+        int hasCycleDirectedGraph(vector<bool> &visited){
+            cout <<endl << "in directed graph cycle detection" << endl;
+            vector<bool> recursionVec(_nodeCnt, false);
+            for(int i=0; i<graph.size(); i++){
+                if(visited[i]){
+                    continue;
+                }
+                
+                if(dfsCycleDetectionDirectedGraph(i,visited,recursionVec)){
+                    cout << "cycle detected in directed graph  " << endl;
+                    return 1;
+                }
+                
+                recursionVec.assign(_nodeCnt, false);
+            }
+            
+            cout <<endl << " no cycle detected in directed graph " << endl;
             return 0;
             
         
@@ -244,6 +287,9 @@ int main() {
     //graph->hasCycle();
     vector<bool> visited(nodecnt , false);
     graph->hasCycle(visited);
+    
+    visited.assign(nodecnt , false);
+    graph->hasCycleDirectedGraph(visited);
     
     vector<int> dijkstra_op = graph->djikstra(0);
     cout << endl;
