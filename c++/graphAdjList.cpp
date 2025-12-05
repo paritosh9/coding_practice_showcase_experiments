@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <utility>
+#include <queue>
 
 using namespace std;
 
@@ -56,8 +57,28 @@ class Graph{
             }    
         }
         
-        void bfs(){
+        void bfs(int start){
+            cout << "BFS - ";
+            vector<bool> visited(_nodeCnt, false);
+            queue<int> bfsQ;
             
+            bfsQ.push(start);
+            while(!bfsQ.empty()){
+                int curr = bfsQ.front();
+                if(visited[curr] == true){
+                    bfsQ.pop();
+                    continue;
+                }
+                bfsQ.pop();
+                cout << curr << " ";
+                visited[curr] = true;
+                
+                for(auto[node, wt] : _adjListGraph[curr]){
+                    bfsQ.push(node);
+                }
+                
+            }
+            cout << endl;
         }
 
 };
@@ -77,7 +98,8 @@ int main() {
     
     graph.printGraph();
     
-    graph.bfs();
+    cout << endl;
+    graph.bfs(0);
     
     return 0;
 }
