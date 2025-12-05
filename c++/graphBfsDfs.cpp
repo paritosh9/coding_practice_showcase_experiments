@@ -227,29 +227,31 @@ class Graph{
         }
         
         vector<int> djikstra(int src){
+            cout << "Running dijkstra ... " << endl;
             vector<int> dist(_nodeCnt, 2000);
-            dist[src] = 0;
-            pair<int,int> toppq;
+            vector<bool> visited(_nodeCnt, false);
+            priority_queue<pair<int,int>, vector<pair<int,int>> ,greater<pair<int,int>>> pq;
             
-            priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+            dist[src] = 0;
+            
             pq.push({0,src});
             
-            vector<bool> visited(_nodeCnt, false);
-            
             while(!pq.empty()){
-                toppq = pq.top();
+                auto[wt,node] = pq.top();
                 pq.pop();
                 
-                if(visited[toppq.second]) continue;
-                visited[toppq.second] = true;
+                if(visited[node] == true) continue;
                 
-                for(int i=0; i< graph[toppq.second].size(); i++){
-                    if(graph[toppq.second][i] == 0){
-                        continue;
-                    }
-                    if(dist[toppq.second] +  graph[toppq.second][i] < dist[i]){
-                        dist[i] = dist[toppq.second] + graph[toppq.second][i];
-                        pq.push({dist[i], i});
+                dist[node] = wt;
+                visited[node] = true;
+                
+                for(int i=0; i<graph[node].size(); i++){
+                    if(visited[i] == true) continue;
+                    if(graph[node][i] > 0){
+                        int new_wt = wt + graph[node][i];
+                        if(new_wt < dist[i]){
+                            pq.push({new_wt,i});
+                        }
                     }
                 }
             }
