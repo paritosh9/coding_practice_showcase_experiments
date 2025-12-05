@@ -61,20 +61,20 @@ class Graph{
             cout << "BFS - ";
             vector<bool> visited(_nodeCnt, false);
             queue<int> bfsQ;
-            
             bfsQ.push(start);
+            visited[start] = true;
+            
             while(!bfsQ.empty()){
                 int curr = bfsQ.front();
-                if(visited[curr] == true){
-                    bfsQ.pop();
-                    continue;
-                }
                 bfsQ.pop();
                 cout << curr << " ";
-                visited[curr] = true;
+                
                 
                 for(auto[node, wt] : _adjListGraph[curr]){
-                    bfsQ.push(node);
+                    if(! visited[node]){
+                        visited[node] = true;
+                        bfsQ.push(node);
+                    }
                 }
                 
             }
