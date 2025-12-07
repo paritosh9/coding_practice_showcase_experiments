@@ -1,61 +1,86 @@
-
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
-class Node{
-        public :
-            int _data;
-            vector<Node*> _children;
-            
-            Node(int data) : _data(data){}
-            
-            void addChildren(Node *child){
-                if(child == nullptr){
-                    cout << "child is NULL" << endl;
-                    return;
-                }
-                
-                this->_children.push_back(child);
-                return;
-            }
-            
-            void printChildren(Node *node){
-                if(node == nullptr){
-                    cout << "node is NULL" << endl;
-                    return;    
-                }    
-                
-                for(auto i : node->_children){
-                    cout << i->_data <<  " ";
-                }
-            }
-            
-            void printParents(){
-                
-            }
-            
-            void printLeafNodes(Node *node){
-                
-            }
-    };
+class Node {
+  public : 
+    int _data;
+    Node *left;
+    Node *right;
     
+    Node(int data) : _data(data){
+        left = nullptr;
+        right = nullptr;
+    }
+    
+    void inOrder(Node *node, vector<int> &result){
+        if(node == nullptr){
+            return;
+        }
+        
+        inOrder(node->left, result);
+        result.push_back(node->_data);
+        inOrder(node->right, result);
+        
+    }
+    
+    void preOrder(Node *node, vector<int> &result){
+        if(node == nullptr){
+            return;
+        }
+        
+        result.push_back(node->_data);
+        preOrder(node->left, result);
+        preOrder(node->right, result);
+        
+    }
+    
+    void postOrder(Node *node, vector<int> &result){
+        if(node == nullptr){
+            return;
+        }
+        
+        postOrder(node->left, result);
+        postOrder(node->right, result);
+        result.push_back(node->_data);
+        
+    }
+    
+};
+
 int main() {
-    // Write C++ code here
-    // tree
-    Node *root = new Node(2);
-    Node *n2 = new Node(4);
-    Node *n3 = new Node(1);
-    Node *n4 = new Node(11);
-    Node *n5 = new Node(24);
     
-    root->addChildren(n2);
-    root->addChildren(n3);
-    root->addChildren(n4);
-    root->addChildren(n5);
+    Node *root = new Node(1);
+    root->left = new Node(22);
+    root->right = new Node(12);
+    root->left->left = new Node(4);
+    root->left->right = new Node(5);
+    root->right->right = new Node(6);
     
-    root->printChildren(root);
+    vector<int> result;
+    root->inOrder(root, result);
+    cout << "inOrder ... " << endl;
+    for(int i : result){
+        cout << i << " ";
+    }
     
+    result = {};
+    root->preOrder(root, result);
+    cout << endl << "preOrder ... " << endl;
+    for(int i : result){
+        cout << i << " ";
+    }
+    
+    result = {};
+    root->postOrder(root, result);
+    cout << endl << "postOrder ... " << endl;
+    for(int i : result){
+        cout << i << " ";
+    }
+    
+    cout << endl;
+    
+
     return 0;
 }
