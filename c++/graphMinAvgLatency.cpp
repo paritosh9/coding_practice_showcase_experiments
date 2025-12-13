@@ -2,6 +2,7 @@
 #include <vector>
 #include <utility>
 #include <queue>
+#include <algorithm>
 using namespace std;
 
 class interconnectGraph{
@@ -32,8 +33,11 @@ class interconnectGraph{
         
         //dijkstra adj Matrix
         vector<int> minLatencyPathAdjM(int src , int dst){
+            const int INF = 10000;
+            
+            vector<int> parent(_numNodes, -1);
             vector<int> path;
-            vector<int> distNodes(_numNodes, 10000);
+            vector<int> distNodes(_numNodes, INF);
             vector<bool> visited(_numNodes, false);
             priority_queue<pair<int,int>, vector<pair<int,int>>, greater<>> dijkstraPQ;
             distNodes[src] = 0;
@@ -44,18 +48,18 @@ class interconnectGraph{
                 dijkstraPQ.pop();
                 int currNode = top.second;
                 
-                //if(visited[currNode]) continue;
-                //visited[currNode] = true;
+                if(visited[currNode]) continue;
+                visited[currNode] = true;
                 
-                if(top.first > distNodes[currNode]) continue;
+                //if(top.first > distNodes[currNode]) continue;
                 //distNodes[currNode] = top.first;
-                path.push_back(currNode);
                 //if(currNode == dst) break;
                 
                 for(int i=0; i<_numNodes; i++){
                     if(_adjG[currNode][i] != 0 && distNodes[currNode] +_adjG[currNode][i] <  distNodes[i]){
                         distNodes[i] = distNodes[currNode] +_adjG[currNode][i];
-                        dijkstraPQ.push({distNodes[i],i});    
+                        dijkstraPQ.push({distNodes[i],i}); 
+                        parent[i] = currNode;
                     }
                 }
                 
@@ -66,7 +70,7 @@ class interconnectGraph{
             }
             cout << endl;
             
-            return path;  
+            return parent;  
         }
         
         //dijkstra adj List
@@ -89,7 +93,17 @@ int main() {
     noc.addEdge(6,7,3);
     noc.addEdge(3,6,11);
     
-    vector<int> path = noc.minLatencyPathAdjM(2,7);
+    int src = 2, dst =7;
+    vector<int> parent = noc.minLatencyPathAdjM(src,dst);
+    
+    vector<int> path;
+    
+    for(int v=dst; v != -1; v = parent[v]){
+        path.push_back(v);
+        //cout << v << " - ";
+    }
+    
+    reverse(path.begin(), path.end());
     
     for(int x : path){
         cout << x << " - ";
