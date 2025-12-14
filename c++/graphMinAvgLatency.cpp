@@ -130,12 +130,47 @@ class interconnectGraph{
         }
         
         bool cycleDetectionUndirected(){
-        
-            return true;    
+            // keep track of visited
+            // if find visited true and its not parent then has Cycle
+            bool cycledetected = false;
+            int parent;
+            vector<bool> visited(_numNodes, false);
+            stack<pair<int,int>> st;
+            st.push({0,0});
+            
+            while(!st.empty()){
+                pair<int,int> top = st.top();
+                st.pop();
+                parent = top.first;
+                int v = top.second;
+                if(visited[v]) continue;
+                visited[v] = true;
+                
+                for(int i=0; i<_adjG[v].size(); i++){
+                    if(_adjG[v][i] == 0) continue;
+                    else if(_adjG[v][i] !=0 && visited[i] && i != parent){
+                        cycledetected = true;
+                        cout << "cycle detected at : " << i << ",coming from node " << v << " -parent of " << v << " at " << parent << endl;
+                        return true;
+                        //break;
+                    } else{
+                        st.push({v,i});
+                    }
+                }
+                
+                //if(cycledetected) return true;
+                
+            }
+            
+            cout << "cycle not detected " << endl;
+            return false;    
         }
         
         bool cycleDetectionDirected(){
-            
+            // keep track of visited
+            // thats to prevent starting new cycle from already visited nodes
+            // keep stack of current cycle
+            // if we see node present in stack revisited then hasCycle
             return true;    
         }
     
@@ -178,6 +213,7 @@ int main() {
     vector<int> bfsresult = noc.bfs(src);
     cout << endl;
     vector<int> dfsresult = noc.dfs(src);
+    cout << endl;
     
     bool result = noc.cycleDetectionUndirected();
     result = noc.cycleDetectionDirected();
