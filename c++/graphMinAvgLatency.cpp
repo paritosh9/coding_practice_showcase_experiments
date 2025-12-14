@@ -24,7 +24,7 @@ class interconnectGraph{
         
         void addEdge(int src, int dst, int weight){
             _adjG[src][dst] =  weight;
-            _adjG[dst][src] = weight;
+            //_adjG[dst][src] = weight;
         }
         
         void removeEdge(int src, int dst){
@@ -171,7 +171,40 @@ class interconnectGraph{
             // thats to prevent starting new cycle from already visited nodes
             // keep stack of current cycle
             // if we see node present in stack revisited then hasCycle
-            return true;    
+            
+            vector<bool> visited(_numNodes, false);
+            stack<int> st;
+            
+            for(int i=0; i<_numNodes; i++){
+                if(visited[i]) continue;
+                
+                st.push(i);
+                while(!st.empty()){
+                    int top = st.top();
+                    st.pop();
+                    if(visited[top]) {
+                        cout << "cycle detected directed graph " << top << endl;
+                        return true;
+                    }
+                    
+                    visited[top] = true;
+                    
+                    for(int j=0; j<_adjG[top].size(); j++){
+                        if(_adjG[top][j] == 0 ) continue;
+                        if(_adjG[top][j] != 0 && visited[j]) {
+                            cout << "cycle detected directed graph " << j << endl;
+                            return true;    
+                        }else{
+                            st.push(j);    
+                        }
+                    }
+                    
+                }
+                
+            }
+            
+            cout << "cycle not detected in directed graph " << endl;
+            return false;    
         }
     
         vector<int> dfsRecursive(int src){
@@ -189,9 +222,9 @@ int main() {
     noc.addEdge(2,3,11);
     noc.addEdge(2,4,1);
     noc.addEdge(4,6,3);
-    noc.addEdge(5,4,12);
+    noc.addEdge(4,5,12);
     noc.addEdge(6,7,3);
-    noc.addEdge(3,6,11);
+    //noc.addEdge(3,6,11);
     
     int src = 2, dst =7;
     vector<int> parent = noc.minLatencyPathAdjM(src,dst);
@@ -216,6 +249,7 @@ int main() {
     cout << endl;
     
     bool result = noc.cycleDetectionUndirected();
+    cout << endl;
     result = noc.cycleDetectionDirected();
     
     cout << endl;
