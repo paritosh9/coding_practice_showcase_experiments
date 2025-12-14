@@ -114,10 +114,26 @@ class MeshTopology{
         }
         
         void buildLinks(){
-                
+            int lid = 0;
+            for(int r=0 ; r<_rows; r++){
+                for(int c=0; r<_cols; c++){
+                    Router* curr = router(r,c);
+                    if(c+1 < _cols){
+                        connect(curr, router(r,c+1), lid++);
+                    }
+                    
+                    if(r+1 < _rows){
+                        connect(curr, router(r+1,c), lid++);    
+                    }
+                }
+            }
         }
         
-        void connect(){
+        void connect(Router* a, Router* b, int id){
+            
+        }
+        
+        void attachEndPointtoRouter(){
             
         }
         
