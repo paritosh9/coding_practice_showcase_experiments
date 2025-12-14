@@ -129,8 +129,14 @@ class interconnectGraph{
             return result; 
         }
         
-        void cycleDetection(){
+        bool cycleDetectionUndirected(){
+        
+            return true;    
+        }
+        
+        bool cycleDetectionDirected(){
             
+            return true;    
         }
     
         vector<int> dfsRecursive(int src){
@@ -172,6 +178,9 @@ int main() {
     vector<int> bfsresult = noc.bfs(src);
     cout << endl;
     vector<int> dfsresult = noc.dfs(src);
+    
+    bool result = noc.cycleDetectionUndirected();
+    result = noc.cycleDetectionDirected();
     
     cout << endl;
     return 0;
