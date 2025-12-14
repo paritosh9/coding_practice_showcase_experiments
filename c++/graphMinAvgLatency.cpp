@@ -3,6 +3,7 @@
 #include <utility>
 #include <queue>
 #include <algorithm>
+#include <stack>
 using namespace std;
 
 class interconnectGraph{
@@ -78,6 +79,39 @@ class interconnectGraph{
               
           return {};  
         }
+        
+        // bfs
+        void bfs(int src){
+            queue<int> bfsQ;
+            vector<bool> visited(_numNodes, false);
+            
+            bfsQ.push(src);
+            visited[src] = true;
+            
+            while(!bfsQ.empty()){
+                int v = bfsQ.front();
+                bfsQ.pop();
+                cout << v << " - ";
+                for(int i=0; i<_adjG[v].size(); i++){
+                    if(_adjG[v][i] == 0 || visited[i]){
+                        continue;
+                    }
+                    bfsQ.push(i);
+                    visited[i] = true;
+                }
+            }
+        cout << endl;
+        }
+        
+        void dfs(int src){
+            stack<int> st;
+            
+            
+        }
+        
+        void cycleDetection(){
+            
+        }
     
 };
 
@@ -108,6 +142,10 @@ int main() {
     for(int x : path){
         cout << x << " - ";
     }
+    cout << endl;
+    
+    noc.bfs(src);
+    noc.dfs(src);
     
     cout << endl;
     return 0;
