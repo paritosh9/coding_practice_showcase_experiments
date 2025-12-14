@@ -81,7 +81,8 @@ class interconnectGraph{
         }
         
         // bfs
-        void bfs(int src){
+        vector<int> bfs(int src){
+            vector<int> result;
             queue<int> bfsQ;
             vector<bool> visited(_numNodes, false);
             
@@ -92,6 +93,7 @@ class interconnectGraph{
                 int v = bfsQ.front();
                 bfsQ.pop();
                 cout << v << " - ";
+                result.push_back(v);
                 for(int i=0; i<_adjG[v].size(); i++){
                     if(_adjG[v][i] == 0 || visited[i]){
                         continue;
@@ -100,18 +102,41 @@ class interconnectGraph{
                     visited[i] = true;
                 }
             }
-        cout << endl;
+            cout << endl;
+            return result;
         }
         
-        void dfs(int src){
+        vector<int> dfs(int src){
+            vector<int> result;
             stack<int> st;
+            vector<bool> visited(_numNodes, false);
+            st.push(src);
             
-            
+            while(!st.empty()) {
+                int v = st.top();
+                st.pop();
+                
+                if(visited[v]) continue;
+                result.push_back(v);
+                cout << v << " - ";
+                visited[v] = true;
+                for(int i=0; i<_adjG[v].size(); i++){
+                    if(_adjG[v][i] == 0 || visited[i]) continue;
+                    st.push(i);
+                }
+            }
+                
+            return result; 
         }
         
         void cycleDetection(){
             
         }
+    
+        vector<int> dfsRecursive(int src){
+            vector<int> result;
+            return result;
+     }
     
 };
 
@@ -144,8 +169,9 @@ int main() {
     }
     cout << endl;
     
-    noc.bfs(src);
-    noc.dfs(src);
+    vector<int> bfsresult = noc.bfs(src);
+    cout << endl;
+    vector<int> dfsresult = noc.dfs(src);
     
     cout << endl;
     return 0;
