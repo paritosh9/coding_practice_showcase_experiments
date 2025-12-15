@@ -18,8 +18,11 @@ class Cache {
     size_t line_size;
     size_t associativity;
     size_t num_sets;
-    uint64_t time = 0;
     
+    uint64_t time = 0;
+    uint64_t accesses = 0;
+    uint64_t hits = 0;
+    uint64_t misses = 0;
     //vector<Set> sets;
     
     vector<vector<CacheLine>> sets;
@@ -35,6 +38,7 @@ class Cache {
         }
     
         bool access(uint64_t addr) {
+            accesses++;
             time++;
     
             size_t offset_bits = log2(line_size);
@@ -46,11 +50,13 @@ class Cache {
             // Hit?
             for (auto& line : sets[index]) {
                 if (line.valid && line.tag == tag) {
+                    hits++;
                     line.lru = time;
                     return true; // HIT
                 }
             }
-    
+            
+            misses++;
             // Miss: choose LRU victim
             CacheLine* victim = &sets[index][0];
             for (auto& line : sets[index]) {
@@ -67,6 +73,17 @@ class Cache {
             victim->lru = time;
             return false; // MISS
         }
+        
+        double missRate() const {
+        return accesses ? static_cast<double>(misses) / accesses : 0.0;
+    }
+
+    void printStats() const {
+        std::cout << "Accesses : " << accesses << "\n";
+        std::cout << "Hits     : " << hits << "\n";
+        std::cout << "Misses   : " << misses << "\n";
+        std::cout << "MissRate : " << missRate() * 100.0 << "%\n";
+    }
 };
 
 using Set = vector<CacheLine>;
@@ -74,17 +91,22 @@ using Set = vector<CacheLine>;
 int main() {
     // Write C++ code here
     Cache cache(
-        32 * 1024,  // 32KB cache
-        64,         // 64B cache line
-        8           // 8-way associative
+        32 * 1024,  // 32 KB
+        64,         // 64 B line
+        8           // 8-way
     );
 
-    uint64_t addrs[] = {0x1000, 0x1004, 0x2000, 0x1000};
+    uint64_t addrs[] = {
+        0x1000, 0x1004, 0x1008,
+        0x2000, 0x1000, 0x3000,
+        0x1004, 0x4000
+    };
 
     for (auto a : addrs) {
-        cout << "Access " << hex << a
-                  << (cache.access(a) ? " HIT\n" : " MISS\n");
+        cache.access(a);
     }
+
+    cache.printStats();
 
     return 0;
 }
