@@ -20,13 +20,14 @@ class Producer{
       std::cout<<"producer class constructor\n";
     }
     
-    void produce(std::function<void(int)> producerCallback){
+    void produce(std::function<int(int)> producerCallback){
       for(int i = 0; i < size; i++){
         std::unique_lock<std::mutex> lock(mtx);
         cv.wait(lock,[](){return (threadSafeQueue.size() < size);});
-        threadSafeQueue.push(i); 
+        //threadSafeQueue.push(i); 
+        threadSafeQueue.push(producerCallback(i));
         std::cout  << "producing : " << i << " \n";
-        producerCallback(i);
+        //producerCallback(i);
         cv.notify_one();
       }        
     }
@@ -65,11 +66,12 @@ int main()
     Producer producer;
     Consumer consumer;
     
-    auto producerCallback = [](int data){
+    auto producerCallback = [](int data) -> int{
       std::cout << "producing final data in callback = " << (data+2) << std::endl;
+      return (data+2);
     };
-    auto consumerCallback = [](int data){
-      std::cout << "consuming final data in callback = " << (data+2) << std::endl;    
+    auto consumerCallback = [](int data) {
+      std::cout << "consuming final data in callback = " << (data) << std::endl;    
     };
     
     std::thread producer_thread([&producer, &producerCallback](){
