@@ -10,7 +10,7 @@ class LatencyModel{
         LatencyModel(){}
 };
 
-class ThroughPutModel{
+class ThroughputModel{
    private:
     
     public:
@@ -24,7 +24,7 @@ class simpleLinkLatencyModel : public LatencyModel{
         simpleLinkLatencyModel(float latency): _latency(latency){}    
 };
 
-class simpleLinkThroughputModel : public ThroughPutModel{
+class simpleLinkThroughputModel : public ThroughputModel{
     private:
         double _tp;
     public:
@@ -64,7 +64,22 @@ class Link{
         int _id;
         Router* _src;
         Router* _dst;
+        unique_ptr<LatencyModel> _lm;
+        unique_ptr<ThroughputModel> _tpm;
+        
+        vector<Flow*> flows;
     
+    public:
+        Link(int id, Router* src, Router* dst, unique_ptr<LatencyModel> lm,
+            unique_ptr<ThroughputModel> tpm) : _id(id), _src(src), _dst(dst), _lm(move(lm), _tpm(move(tpm)));
+        
+        double latency() const {
+            return _lm->latency();
+        }
+        
+        double throughput() const {
+            return _tpm->throughput();
+        }
 };
 
 class MeshTopology{
