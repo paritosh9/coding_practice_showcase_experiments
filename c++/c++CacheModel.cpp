@@ -1,4 +1,4 @@
-#include <iostream>
+#include#include <iostream>
 #include <cstdint>
 #include <vector>
 #include <cmath>
@@ -13,10 +13,10 @@ struct Node{
 };
 
 struct CacheLine{
-    bool _valid;
+    bool _valid=false;
     uint64_t _tag;
     uint64_t _time = 0 ;
-    CacheLine(uint64_t tag) : _tag(tag){}
+    //CacheLine(uint64_t tag) : _tag(tag){}
 };
 
 class Cache{
@@ -37,22 +37,26 @@ class Cache{
     public:
         Cache(uint64_t C, uint64_t L, uint64_t A ) : _cacheSize(C),_cacheLineSize(L),_associativity(A){
             _numSets = _cacheSize/_cacheLineSize;
-            _cache.resize(_numSets,vector<CacheLine>(A,0));
+            _cache.resize(_numSets,vector<CacheLine>(A));
             cout << " Building Cache " << endl;
         } 
         
         
         void access(uint64_t addr){
+            //cout << addr << endl;
             _accesses++;
             time++;
             size_t offsetBits   = log2(_cacheLineSize);   
             size_t indexBits    = log2(_numSets);
             
-            uint64_t index  = (addr >> offsetBits) & (_numSets-1);
+            size_t index  = (addr >> offsetBits) & (_numSets-1);
+            //cout << "index - " << index << endl;
             uint64_t tag    =  addr >> (offsetBits + indexBits);
+            //cout << "tag - " << tag << endl;
             
             for(int i=0; i < _cache[index].size(); i++){
-                if(_cache[index][i]._tag == tag){
+                if(_cache[index][i]._valid && _cache[index][i]._tag == tag){
+                    //cout << _cache[index][i]._tag << " - " << tag << endl;
                     _hits++;
                     _cache[index][i]._time = time;
                     return;
@@ -77,6 +81,7 @@ class Cache{
             victim->_time   = time;
             
             _misses++;
+            return;
             
         }
         
@@ -85,7 +90,7 @@ class Cache{
             cout << "Number of access  : " << _accesses << endl;
             cout << "Hits              : " << _hits << endl;
             cout << "Misses            : " << _misses << endl;
-            cout << "Miss Rate         : " << _misses/_accesses << endl;
+            cout << "Miss Rate         : " << static_cast<double>(_misses)/_accesses << endl;
             
         }
     
@@ -99,9 +104,14 @@ int main() {
         8
         );
     
-    uint64_t address[] = {0x1000, 0x2000, 0x3000, 0x4000};
+    //uint64_t addrs[] = {0x1000, 0x2000, 0x3000, 0x4000};
+    uint64_t addrs[] = {
+        0x1000, 0x1004, 0x1008,
+        0x2000, 0x1000, 0x3000,
+        0x1004, 0x4000
+    };
     
-    for(auto addr : address){
+    for(auto addr : addrs){
         cache.access(addr);
     }
     
