@@ -4,19 +4,31 @@
 using namespace std;
 
 class LatencyModel{
+    private:
     
+    public:
+        LatencyModel(){}
 };
 
 class ThroughPutModel{
+   private:
     
+    public:
+        ThroughPutModel(){} 
 };
 
 class simpleLinkLatencyModel : public LatencyModel{
-    
+    private:
+        double _latency;
+    public:
+        simpleLinkLatencyModel(float latency): _latency(latency){}    
 };
 
-class simpleLinkThroughPutModel : public ThroughPutModel{
-    
+class simpleLinkThroughputModel : public ThroughPutModel{
+    private:
+        double _tp;
+    public:
+        simpleLinkThroughputModel(float tp): _tp(tp){}   
 };
 
 class advancedLinkLatencyModel : public LatencyModel{
@@ -48,6 +60,10 @@ class Flow{
 };
 
 class Link{
+    private:
+        int _id;
+        Router* _src;
+        Router* _dst;
     
 };
 
@@ -55,34 +71,56 @@ class MeshTopology{
     private :
         int _rows;
         int _cols;
+        
+        vector<unique_ptr<Router>> routers;
+        vector<unique_ptr<Link>> links;
+        vector<unique_ptr<Flow>> flows;
+        
     public:
         MeshTopology(int r, int c) : _rows(r), _cols(c){
             buildRouters(r,c);
             buildLinks();
-            connect();
+            
         }    
         
-        void connect(){
-            
-        }
         
         void buildRouters(int r, int c){
-            vector<unique_ptr<Router>> Routers;
             for(int i=0; i<r*c; i++){
                 //auto ptr = make_unique<Router>(i);
                 //Routers.push_back(ptr);
-                Routers.push_back(make_unique<Router>(i));
+                routers.push_back(make_unique<Router>(i));
             }
         }
         
+        Router* router(int r, int c){
+            return routers[r*_cols + c].get();    
+        }
+        
         void buildLinks(){
-            vector<unique_ptr<Link>> Links;
-            for(int i=0; i<r; i++){
-                for(int j=0; j<c; j++){
-                    Links.push_back(make_unique<Link>(i,j))     
+            int lid=0;
+            for(int r=0; r<_rows; r++){
+                for(int c=0; c<_cols; c++){
+                    Router* curr = router(r,c);
+                    if(c+1 < _cols){
+                        connect(curr, router(r,c+1),lid++);
+                    }
+                    if(r+1 < _rows){
+                        connect(curr, router(r+1,c), lid++);
+                    }
                 }
             }
             
+        }
+        
+        void connect(Router* a, Router* b, int lid){
+            auto link = make_unique<Link>(
+                lid,a,b,
+                make_unique<simpleLinkLatencyModel>(1.0),
+                make_unique<simpleLinkThroughputModel>(100.0)
+                );
+            
+            a->out_links.push_back(link.get());
+            links.push_back(move(link));
         }
         
     
